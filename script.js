@@ -1,13 +1,12 @@
-document.addEventListener("DOMContentLoaded", () => {
+﻿document.addEventListener("DOMContentLoaded", () => {
     const body = document.body;
     const themeBtn = document.getElementById("theme-toggle");
     const langBtn = document.getElementById("lang-toggle");
 
-    /* =======================
-       TEMA (CLARO / ESCURO)
-    ======================= */
-
     function updateThemeIcon() {
+        if (!themeBtn) {
+            return;
+        }
         themeBtn.textContent = body.classList.contains("dark-mode") ? "🌙" : "☀️";
     }
 
@@ -17,39 +16,232 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     updateThemeIcon();
 
-    themeBtn.addEventListener("click", () => {
-        body.classList.toggle("dark-mode");
-        localStorage.setItem(
-            "theme",
-            body.classList.contains("dark-mode") ? "dark" : "light"
-        );
-        updateThemeIcon();
-    });
-
-    /* =======================
-       IDIOMA
-    ======================= */
+    if (themeBtn) {
+        themeBtn.addEventListener("click", () => {
+            body.classList.toggle("dark-mode");
+            localStorage.setItem(
+                "theme",
+                body.classList.contains("dark-mode") ? "dark" : "light"
+            );
+            updateThemeIcon();
+        });
+    }
 
     const pageMap = {
         "index.html": "index_en.html",
         "index_en.html": "index.html",
         "curriculo.html": "curriculo_en.html",
-        "curriculo_en.html": "curriculo.html"
+        "curriculo_en.html": "curriculo.html",
+        "blog.html": "blog_en.html",
+        "blog_en.html": "blog.html",
+        "contato.html": "contact_en.html",
+        "contact_en.html": "contato.html"
     };
 
     function updateLangIcon() {
-        const isEnglish = window.location.pathname.includes("_en");
+        if (!langBtn) {
+            return;
+        }
+
+        const path = window.location.pathname;
+        const isEnglish = path.includes("_en") || path.includes("contact_en");
         langBtn.textContent = isEnglish ? "🇺🇸" : "🇧🇷";
     }
 
     updateLangIcon();
 
-    langBtn.addEventListener("click", () => {
-        const currentPage = window.location.pathname.split("/").pop();
-        const targetPage = pageMap[currentPage];
+    if (langBtn) {
+        langBtn.addEventListener("click", () => {
+            const currentPage = window.location.pathname.split("/").pop();
+            const targetPage = pageMap[currentPage];
 
-        if (targetPage) {
-            window.location.href = targetPage;
-        }
-    });
+            if (targetPage) {
+                window.location.href = targetPage;
+            }
+        });
+    }
+
+    updateFooterYearRange();
+    initBlogPage();
 });
+
+function updateFooterYearRange() {
+    const yearNodes = document.querySelectorAll(".footer-year-range[data-start-year]");
+    const currentYear = new Date().getFullYear();
+
+    yearNodes.forEach((node) => {
+        const startYear = Number.parseInt(node.dataset.startYear || "", 10);
+
+        if (!Number.isInteger(startYear)) {
+            return;
+        }
+
+        node.textContent = currentYear > startYear ? `${startYear}-${currentYear}` : `${startYear}`;
+    });
+}
+
+function initBlogPage() {
+    const postsContainer = document.getElementById("blog-posts");
+    const indexContainer = document.getElementById("blog-index");
+    const searchInput = document.getElementById("blog-search");
+    const feedback = document.getElementById("blog-search-feedback");
+
+    if (!postsContainer || !indexContainer || !searchInput) {
+        return;
+    }
+
+    const isEnglish = document.documentElement.lang === "en";
+
+    const posts = isEnglish
+        ? [
+              {
+                  title: "How I Structure Personal Side Projects",
+                  date: "2026-02-01",
+                  summary: "A practical flow to move from idea to a working MVP with clear weekly checkpoints.",
+                  tags: ["productivity", "projects", "planning"]
+              },
+              {
+                  title: "Notes on Writing Better Administrative Processes",
+                  date: "2026-01-20",
+                  summary: "Small documentation changes that reduce rework and improve handoffs between teams.",
+                  tags: ["operations", "documentation", "workflow"]
+              },
+              {
+                  title: "What I Learned from Bilingual Customer Support",
+                  date: "2025-12-12",
+                  summary: "Patterns that improve clarity and trust when assisting users in two languages.",
+                  tags: ["communication", "support", "bilingual"]
+              }
+          ]
+        : [
+              {
+                  title: "Como organizo projetos pessoais",
+                  date: "2026-02-01",
+                  summary: "Um fluxo pratico para sair da ideia e chegar a um MVP funcional com checkpoints semanais.",
+                  tags: ["produtividade", "projetos", "planejamento"]
+              },
+              {
+                  title: "Notas sobre processos administrativos mais eficientes",
+                  date: "2026-01-20",
+                  summary: "Pequenos ajustes de documentacao que reduzem retrabalho e melhoram a passagem entre equipes.",
+                  tags: ["operacoes", "documentacao", "fluxo"]
+              },
+              {
+                  title: "O que aprendi no atendimento bilingue",
+                  date: "2025-12-12",
+                  summary: "Padroes que aumentam clareza e confianca quando o suporte acontece em dois idiomas.",
+                  tags: ["comunicacao", "atendimento", "bilingue"]
+              }
+          ];
+
+    const normalizedPosts = posts
+        .slice()
+        .sort((a, b) => new Date(b.date) - new Date(a.date))
+        .map((post, index) => ({
+            ...post,
+            id: `post-${slugify(post.title)}-${index}`
+        }));
+
+    searchInput.addEventListener("input", () => {
+        const query = searchInput.value.trim().toLowerCase();
+        const terms = query.split(/\s+/).filter(Boolean);
+
+        const filtered = normalizedPosts.filter((post) => {
+            if (terms.length === 0) {
+                return true;
+            }
+
+            const searchableText = [post.title, post.summary, post.tags.join(" ")].join(" ").toLowerCase();
+            return terms.every((term) => searchableText.includes(term));
+        });
+
+        renderBlog(postsContainer, indexContainer, feedback, filtered, query, isEnglish);
+    });
+
+    renderBlog(postsContainer, indexContainer, feedback, normalizedPosts, "", isEnglish);
+}
+
+function renderBlog(postsContainer, indexContainer, feedback, posts, query, isEnglish) {
+    postsContainer.innerHTML = "";
+    indexContainer.innerHTML = "";
+
+    if (posts.length === 0) {
+        postsContainer.innerHTML = `<div class="glass-box no-results">${
+            isEnglish ? "No posts found for this keyword." : "Nenhum post encontrado para essa palavra-chave."
+        }</div>`;
+        if (feedback) {
+            feedback.textContent = isEnglish ? "0 posts listed" : "0 posts listados";
+        }
+        return;
+    }
+
+    const groups = new Map();
+
+    posts.forEach((post) => {
+        const key = post.date.slice(0, 7);
+        if (!groups.has(key)) {
+            groups.set(key, []);
+        }
+        groups.get(key).push(post);
+
+        const article = document.createElement("article");
+        article.className = "glass-box post-card";
+        article.id = post.id;
+        article.innerHTML = `
+            <p class="post-date">${formatDate(post.date, isEnglish)}</p>
+            <h3>${post.title}</h3>
+            <p>${post.summary}</p>
+            <p class="post-tags">${post.tags.map((tag) => `<span>${tag}</span>`).join("")}</p>
+        `;
+        postsContainer.appendChild(article);
+    });
+
+    groups.forEach((groupPosts, monthKey) => {
+        const monthTitle = document.createElement("h3");
+        monthTitle.className = "index-month";
+        monthTitle.textContent = formatMonth(monthKey, isEnglish);
+
+        const list = document.createElement("ul");
+        list.className = "index-list";
+
+        groupPosts.forEach((post) => {
+            const item = document.createElement("li");
+            item.innerHTML = `<a href="#${post.id}">${post.title}</a>`;
+            list.appendChild(item);
+        });
+
+        indexContainer.appendChild(monthTitle);
+        indexContainer.appendChild(list);
+    });
+
+    if (feedback) {
+        const label = posts.length === 1 ? (isEnglish ? "post" : "post") : (isEnglish ? "posts" : "posts");
+        const queryText = query ? ` - "${query}"` : "";
+        feedback.textContent = `${posts.length} ${label}${queryText}`;
+    }
+}
+
+function formatDate(dateText, isEnglish) {
+    const locale = isEnglish ? "en-US" : "pt-BR";
+    return new Date(`${dateText}T00:00:00`).toLocaleDateString(locale, {
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+    });
+}
+
+function formatMonth(monthKey, isEnglish) {
+    const locale = isEnglish ? "en-US" : "pt-BR";
+    return new Date(`${monthKey}-01T00:00:00`).toLocaleDateString(locale, {
+        month: "long",
+        year: "numeric"
+    });
+}
+
+function slugify(text) {
+    return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, "")
+        .trim()
+        .replace(/\s+/g, "-");
+}

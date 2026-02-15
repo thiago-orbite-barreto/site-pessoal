@@ -20,12 +20,26 @@ body {
 }
 
 /* Esquerda */
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
 .nav-title {
     font-family: "Cinzel", serif;
     font-size: 0.9rem;
     letter-spacing: 2px;
     text-decoration: none;
     color: var(--text);
+}
+
+.nav-divider {
+    font-family: "Cinzel", serif;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    color: var(--accent);
+    opacity: 0.85;
 }
 
 /* Centro */
@@ -204,6 +218,124 @@ body {
     font-size: 0.85rem;
 }
 
+/* Blog */
+.blog-layout {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 20px;
+    align-items: start;
+}
+
+.blog-sidebar {
+    position: sticky;
+    top: 84px;
+}
+
+.blog-search-box {
+    margin-bottom: 20px;
+}
+
+.blog-search-box label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    opacity: 0.85;
+}
+
+.blog-search-box input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    background: var(--panel-bg);
+    color: var(--text);
+    box-sizing: border-box;
+}
+
+.blog-search-feedback {
+    margin: 10px 0 0;
+    font-size: 0.85rem;
+    opacity: 0.75;
+}
+
+.index-month {
+    margin: 20px 0 8px;
+    font-family: "Cinzel", serif;
+    font-size: 0.9rem;
+}
+
+.index-list {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.index-list li {
+    margin-bottom: 6px;
+}
+
+.index-list a {
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 1px dotted transparent;
+}
+
+.index-list a:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+.post-card {
+    margin-bottom: 16px;
+}
+
+.post-date {
+    margin: 0 0 8px;
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+.post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0 0;
+}
+
+.post-tags span {
+    border: 1px solid var(--border);
+    padding: 4px 8px;
+    font-size: 0.75rem;
+}
+
+.no-results {
+    text-align: center;
+}
+
+/* Contact */
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+.contact-list {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.contact-list li {
+    margin-bottom: 8px;
+}
+
+/* Footer */
+.site-footer {
+    margin-top: 40px;
+    border-top: 1px solid var(--border);
+    padding: 20px;
+    text-align: center;
+    font-size: 0.82rem;
+    opacity: 0.75;
+}
+
 /* Responsive */
 @media (max-width: 900px) {
     .site-nav {
@@ -212,6 +344,14 @@ body {
 
     .content-area {
         margin: 28px auto;
+    }
+
+    .blog-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .blog-sidebar {
+        position: static;
     }
 }
 

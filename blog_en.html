@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Thiago Orbite Barreto | Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+    <title>Blog | Thiago Orbite Barreto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -28,15 +28,27 @@
 </nav>
 
 <header class="main-header">
-    <h1 class="ff-title">THIAGO ORBITE BARRETO</h1>
-    <p class="subtitle">Developer | Analyst | Communicator</p>
+    <h1 class="ff-title">BLOG</h1>
+    <p class="subtitle">Ideas, projects and work notes</p>
 </header>
 
 <main class="content-area">
-    <section class="glass-box">
-        <h2>Welcome</h2>
-        <p>This is my professional space for ideas and projects.</p>
-    </section>
+    <div class="blog-layout">
+        <aside class="glass-box blog-sidebar">
+            <h2>Index by date</h2>
+            <div id="blog-index"></div>
+        </aside>
+
+        <section class="blog-main">
+            <div class="glass-box blog-search-box">
+                <label for="blog-search">Search by keywords</label>
+                <input id="blog-search" type="search" placeholder="Ex.: productivity, workflow, planning">
+                <p id="blog-search-feedback" class="blog-search-feedback"></p>
+            </div>
+
+            <div id="blog-posts"></div>
+        </section>
+    </div>
 </main>
 
 <footer class="site-footer">
