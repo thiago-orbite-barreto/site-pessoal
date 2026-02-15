@@ -377,6 +377,12 @@ body {
     transition: all 0.2s ease;
 }
 
+.social-icon {
+    width: 16px;
+    height: 16px;
+    display: block;
+}
+
 .social-link:hover {
     color: var(--accent);
     border-color: var(--accent);
