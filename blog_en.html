@@ -33,6 +33,14 @@
 </header>
 
 <main class="content-area">
+    <div class="blog-toolbar">
+        <div class="glass-box blog-search-box">
+            <label for="blog-search">Search by keywords</label>
+            <input id="blog-search" type="search" placeholder="Ex.: productivity, workflow, planning">
+            <p id="blog-search-feedback" class="blog-search-feedback"></p>
+        </div>
+    </div>
+
     <div class="blog-layout">
         <aside class="glass-box blog-sidebar">
             <h2>Index by date</h2>
@@ -40,12 +48,6 @@
         </aside>
 
         <section class="blog-main">
-            <div class="glass-box blog-search-box">
-                <label for="blog-search">Search by keywords</label>
-                <input id="blog-search" type="search" placeholder="Ex.: productivity, workflow, planning">
-                <p id="blog-search-feedback" class="blog-search-feedback"></p>
-            </div>
-
             <div id="blog-posts"></div>
         </section>
     </div>
@@ -53,8 +55,16 @@
 
 <footer class="site-footer">
     <p>&copy; <span class="footer-year-range" data-start-year="2025"></span> Thiago Orbite Barreto</p>
+    <nav class="social-links" aria-label="Social media links">
+        <a class="social-link" href="https://www.facebook.com/thiago.orbite.barreto.2025/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook">f</a>
+        <a class="social-link" href="https://www.instagram.com/thiagoorbitebarreto/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram">ig</a>
+        <a class="social-link" href="https://www.threads.com/@thiagoorbitebarreto" target="_blank" rel="noopener noreferrer" aria-label="Threads" title="Threads">@</a>
+        <a class="social-link" href="https://x.com/thiago_orbite_" target="_blank" rel="noopener noreferrer" aria-label="X" title="X">x</a>
+        <a class="social-link" href="https://www.linkedin.com/in/thiagoorbitebarreto/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn">in</a>
+    </nav>
 </footer>
 
 <script src="script.js"></script>
 </body>
 </html>
+

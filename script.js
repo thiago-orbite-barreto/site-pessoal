@@ -92,47 +92,7 @@ function initBlogPage() {
 
     const isEnglish = document.documentElement.lang === "en";
 
-    const posts = isEnglish
-        ? [
-              {
-                  title: "How I Structure Personal Side Projects",
-                  date: "2026-02-01",
-                  summary: "A practical flow to move from idea to a working MVP with clear weekly checkpoints.",
-                  tags: ["productivity", "projects", "planning"]
-              },
-              {
-                  title: "Notes on Writing Better Administrative Processes",
-                  date: "2026-01-20",
-                  summary: "Small documentation changes that reduce rework and improve handoffs between teams.",
-                  tags: ["operations", "documentation", "workflow"]
-              },
-              {
-                  title: "What I Learned from Bilingual Customer Support",
-                  date: "2025-12-12",
-                  summary: "Patterns that improve clarity and trust when assisting users in two languages.",
-                  tags: ["communication", "support", "bilingual"]
-              }
-          ]
-        : [
-              {
-                  title: "Como organizo projetos pessoais",
-                  date: "2026-02-01",
-                  summary: "Um fluxo pratico para sair da ideia e chegar a um MVP funcional com checkpoints semanais.",
-                  tags: ["produtividade", "projetos", "planejamento"]
-              },
-              {
-                  title: "Notas sobre processos administrativos mais eficientes",
-                  date: "2026-01-20",
-                  summary: "Pequenos ajustes de documentacao que reduzem retrabalho e melhoram a passagem entre equipes.",
-                  tags: ["operacoes", "documentacao", "fluxo"]
-              },
-              {
-                  title: "O que aprendi no atendimento bilingue",
-                  date: "2025-12-12",
-                  summary: "Padroes que aumentam clareza e confianca quando o suporte acontece em dois idiomas.",
-                  tags: ["comunicacao", "atendimento", "bilingue"]
-              }
-          ];
+    const posts = [];
 
     const normalizedPosts = posts
         .slice()
@@ -167,8 +127,11 @@ function renderBlog(postsContainer, indexContainer, feedback, posts, query, isEn
 
     if (posts.length === 0) {
         postsContainer.innerHTML = `<div class="glass-box no-results">${
-            isEnglish ? "No posts found for this keyword." : "Nenhum post encontrado para essa palavra-chave."
+            isEnglish ? "No posts published yet." : "Nenhum post publicado ainda."
         }</div>`;
+        indexContainer.innerHTML = `<p class="index-empty">${
+            isEnglish ? "No dates available yet." : "Sem datas cadastradas ainda."
+        }</p>`;
         if (feedback) {
             feedback.textContent = isEnglish ? "0 posts listed" : "0 posts listados";
         }
