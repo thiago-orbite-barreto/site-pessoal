@@ -14,7 +14,7 @@
 }
 
 
-/* Espaçamento do conteúdo por causa da barra fixa */
+/* Top spacing for fixed nav */
 body {
     padding-top: 60px;
 }
@@ -40,6 +40,27 @@ body {
     letter-spacing: 2px;
     color: var(--accent);
     opacity: 0.85;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.nav-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--text);
 }
 
 /* Centro */
@@ -419,32 +440,55 @@ body {
     .site-nav {
         height: auto;
         padding: 10px 14px;
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto;
         gap: 10px;
-        justify-items: center;
+        justify-items: stretch;
     }
 
     body {
-        padding-top: 130px;
+        padding-top: 78px;
+    }
+
+    body.mobile-nav-open {
+        padding-top: 184px;
     }
 
     .nav-left {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
-        gap: 6px;
+        gap: 8px;
     }
 
     .nav-title {
         font-size: 0.8rem;
-        text-align: center;
+        text-align: left;
+    }
+
+    .nav-toggle {
+        display: inline-flex;
+        justify-self: end;
+    }
+
+    .nav-menu {
+        grid-column: 1 / -1;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 12px;
+    }
+
+    .site-nav.nav-open .nav-menu {
+        display: flex;
     }
 
     .nav-center {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 6px;
     }
 
     .nav-link {
@@ -453,7 +497,7 @@ body {
     }
 
     .nav-right {
-        justify-content: center;
+        justify-content: flex-end;
     }
 
     .nav-btn {
@@ -493,7 +537,11 @@ body {
 
 @media (max-width: 420px) {
     body {
-        padding-top: 150px;
+        padding-top: 78px;
+    }
+
+    body.mobile-nav-open {
+        padding-top: 196px;
     }
 
     .nav-title {
@@ -513,4 +561,5 @@ body {
         padding: 16px;
     }
 }
+
 
