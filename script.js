@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!themeBtn) {
             return;
         }
-        themeBtn.textContent = body.classList.contains("dark-mode") ? "☾" : "☀";
+        themeBtn.textContent = body.classList.contains("dark-mode") ? "moon" : "sun";
     }
 
     const savedTheme = localStorage.getItem("theme");
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const path = window.location.pathname;
         const isEnglish = path.includes("_en") || path.includes("contact_en");
-        langBtn.textContent = isEnglish ? "🇺🇸" : "🇧🇷";
+        langBtn.textContent = isEnglish ? "en" : "pt";
     }
 
     updateLangIcon();
@@ -238,7 +238,7 @@ function initNavMenu() {
     const setMenuState = (isOpen) => {
         siteNav.classList.toggle("nav-open", isOpen);
         toggleBtn.setAttribute("aria-expanded", String(isOpen));
-        toggleBtn.textContent = isOpen ? "✕" : "☰";
+        toggleBtn.textContent = isOpen ? "\u2715" : "\u2630";
         toggleBtn.setAttribute("aria-label", isOpen ? closeLabel : openLabel);
     };
 
@@ -276,7 +276,7 @@ function initScrollTopButton() {
         scrollBtn.className = "scroll-top-btn";
         scrollBtn.type = "button";
         scrollBtn.setAttribute("aria-label", document.documentElement.lang === "en" ? "Back to top" : "Voltar ao topo");
-        scrollBtn.textContent = "↑";
+        scrollBtn.textContent = "\u2191";
         document.body.appendChild(scrollBtn);
     }
 
