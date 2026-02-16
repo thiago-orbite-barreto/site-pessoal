@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,21 +9,26 @@
 </head>
 <body>
 
+<header class="top-utility">
+    <div class="utility-inner">
+        <button id="theme-toggle" class="nav-btn" type="button" aria-label="Toggle theme">☀</button>
+        <button id="lang-toggle" class="nav-btn" type="button" aria-label="Toggle language">🇺🇸</button>
+    </div>
+</header>
+
 <nav class="site-nav">
     <div class="nav-left">
         <a href="index_en.html" class="nav-title">THIAGO ORBITE BARRETO</a>
-        <span class="nav-divider">I</span>
     </div>
 
-    <div class="nav-center">
-        <a href="blog_en.html" class="nav-link">Blog</a>
-        <a href="curriculo_en.html" class="nav-link">Resume</a>
-        <a href="contact_en.html" class="nav-link">Contact</a>
-    </div>
+    <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false">☰</button>
 
-    <div class="nav-right">
-        <button id="theme-toggle" class="nav-btn">☀️</button>
-        <button id="lang-toggle" class="nav-btn">🇺🇸</button>
+    <div class="nav-menu">
+        <div class="nav-center">
+            <a href="blog_en.html" class="nav-link">Blog</a>
+            <a href="curriculo_en.html" class="nav-link">Resume</a>
+            <a href="contact_en.html" class="nav-link">Contact</a>
+        </div>
     </div>
 </nav>
 
@@ -63,5 +68,6 @@
 <script src="script.js"></script>
 </body>
 </html>
+
 
 

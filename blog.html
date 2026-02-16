@@ -9,21 +9,26 @@
 </head>
 <body>
 
+<header class="top-utility">
+    <div class="utility-inner">
+        <button id="theme-toggle" class="nav-btn" type="button" aria-label="Alternar modo">☀</button>
+        <button id="lang-toggle" class="nav-btn" type="button" aria-label="Alternar idioma">🇧🇷</button>
+    </div>
+</header>
+
 <nav class="site-nav">
     <div class="nav-left">
         <a href="index.html" class="nav-title">THIAGO ORBITE BARRETO</a>
-        <span class="nav-divider">I</span>
     </div>
 
-    <div class="nav-center">
-        <a href="blog.html" class="nav-link">Blog</a>
-        <a href="curriculo.html" class="nav-link">Currículo</a>
-        <a href="contato.html" class="nav-link">Contato</a>
-    </div>
+    <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">☰</button>
 
-    <div class="nav-right">
-        <button id="theme-toggle" class="nav-btn">☀️</button>
-        <button id="lang-toggle" class="nav-btn">🇧🇷</button>
+    <div class="nav-menu">
+        <div class="nav-center">
+            <a href="blog.html" class="nav-link">Blog</a>
+            <a href="curriculo.html" class="nav-link">Curr&iacute;culo</a>
+            <a href="contato.html" class="nav-link">Contato</a>
+        </div>
     </div>
 </nav>
 
@@ -36,14 +41,14 @@
     <div class="blog-toolbar">
         <div class="glass-box blog-search-box">
             <label for="blog-search">Pesquisar por palavras-chave</label>
-            <input id="blog-search" type="search" placeholder="Ex.: produtividade, comunicação, planejamento">
+            <input id="blog-search" type="search" placeholder="Ex.: produtividade, comunica&ccedil;&atilde;o, planejamento">
             <p id="blog-search-feedback" class="blog-search-feedback"></p>
         </div>
     </div>
 
     <div class="blog-layout">
         <aside class="glass-box blog-sidebar">
-            <h2>Índice por data</h2>
+            <h2>&Iacute;ndice por data</h2>
             <div id="blog-index"></div>
         </aside>
 
@@ -77,4 +82,3 @@
 <script src="script.js"></script>
 </body>
 </html>
-
