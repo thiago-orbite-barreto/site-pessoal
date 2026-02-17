@@ -394,7 +394,14 @@ function initContactForm() {
         }
 
         if (key === "email") {
-            const isValid = emailRegex.test(value);
+            const normalizedValue = value.replace(/\s+/g, "");
+            if (normalizedValue !== value) {
+                config.input.value = normalizedValue;
+            }
+            const nativeValid = typeof config.input.checkValidity === "function"
+                ? config.input.checkValidity()
+                : true;
+            const isValid = nativeValid && emailRegex.test(config.input.value);
             setFieldState(config.input, isValid, config.message);
             return isValid;
         }
