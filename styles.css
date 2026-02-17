@@ -133,7 +133,7 @@ body {
     display: block;
 }
 
-body.dark-mode .nav-icon {
+body.dark-mode .nav-icon--theme {
     filter: invert(1);
 }
 

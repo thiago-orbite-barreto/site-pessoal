@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const isDark = body.classList.contains("dark-mode");
         if (themeIcon) {
             themeIcon.src = isDark ? "assets/icons/moon.svg" : "assets/icons/sun.svg";
+            themeIcon.alt = isDark ? "Modo escuro" : "Modo claro";
         }
     }
 
@@ -65,7 +66,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const path = window.location.pathname;
         const isEnglish = path.includes("_en") || path.includes("contact_en");
         if (langIcon) {
-            langIcon.src = "assets/icons/globe.svg";
+            langIcon.src = isEnglish ? "assets/icons/flag-us.svg" : "assets/icons/flag-br.svg";
+            langIcon.alt = isEnglish ? "English" : "Português";
         }
         langBtn.setAttribute("title", isEnglish ? "Switch to Portuguese" : "Switch to English");
     }
