@@ -43,7 +43,7 @@
             <h2>Formul&aacute;rio de contato</h2>
         </div>
 
-        <form class="contact-form" id="contact-form" action="https://formspree.io/f/mreakvvg" method="post" novalidate data-recaptcha-site-key="6LdCEW8sAAAAAH_NsJAhOqV0reSXxwNumB6mWqfV">
+        <form class="contact-form" id="contact-form" action="https://formspree.io/f/mreakvvg" method="post" novalidate data-recaptcha-site-key="6LdsFW8sAAAAABG-y1Wllo9mJgJmxfzKK6Jqukn7" data-recaptcha-version="v2">
             <div class="form-row">
                 <div class="form-field">
                     <label for="full-name">Nome completo *</label>
@@ -95,7 +95,9 @@
                 <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
             </div>
 
-            <input type="hidden" name="g-recaptcha-response" id="recaptcha-token" value="">
+            <div class="form-field">
+                <div class="g-recaptcha" data-sitekey="6LdsFW8sAAAAABG-y1Wllo9mJgJmxfzKK6Jqukn7"></div>
+            </div>
 
             <div class="form-actions">
                 <button class="btn-primary" type="submit" data-default-label="Enviar mensagem">Enviar mensagem</button>
@@ -129,7 +131,7 @@
 </footer>
 
 <!-- reCAPTCHA v3: substitua YOUR_SITE_KEY e descomente a linha abaixo -->
-<!-- reCAPTCHA v3 é carregado dinamicamente pelo script.js quando uma chave válida é definida. -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script src="script.js?v=20260217"></script>
 </body>
 </html>

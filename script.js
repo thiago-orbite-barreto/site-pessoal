@@ -312,8 +312,12 @@ function initContactForm() {
     const alertBox = document.getElementById("form-alert");
     const submitBtn = form.querySelector("button[type=\"submit\"]");
     const recaptchaKey = (form.dataset.recaptchaSiteKey || "").trim();
+    const recaptchaVersion = (form.dataset.recaptchaVersion || "").trim().toLowerCase();
     const recaptchaInput = document.getElementById("recaptcha-token");
+    const recaptchaResponseInput = form.querySelector('input[name="g-recaptcha-response"]');
     let isSubmitting = false;
+
+    form.setAttribute("method", "POST");
 
     const fieldMap = {
         name: {
@@ -459,23 +463,15 @@ function initContactForm() {
         const formData = new FormData(form);
         setLoading(true);
 
-        let actionUrl = form.action;
-        let requestOrigin = "";
-        try {
-            requestOrigin = new URL(actionUrl, window.location.href).origin;
-        } catch (error) {
-            requestOrigin = "";
-        }
-        const isSameOrigin = requestOrigin !== "" && requestOrigin === window.location.origin;
+        const actionUrl = form.action;
+        const method = (form.getAttribute("method") || "POST").toUpperCase();
 
         fetch(actionUrl, {
-            method: "POST",
+            method: method,
             body: formData,
             headers: {
                 "Accept": "application/json"
-            },
-            mode: isSameOrigin ? "same-origin" : "cors",
-            credentials: isSameOrigin ? "same-origin" : "omit"
+            }
         })
             .then(async (response) => {
                 const contentType = response.headers.get("content-type") || "";
@@ -526,6 +522,10 @@ function initContactForm() {
             return Promise.resolve(false);
         }
 
+        if (recaptchaVersion === "v2") {
+            return Promise.resolve(true);
+        }
+
         if (window.grecaptcha && typeof window.grecaptcha.execute === "function") {
             return Promise.resolve(true);
         }
@@ -550,6 +550,18 @@ function initContactForm() {
     };
 
     const runRecaptcha = () => {
+        if (recaptchaVersion === "v2") {
+            const token = recaptchaResponseInput ? recaptchaResponseInput.value : "";
+            if (!token) {
+                setAlert("error", "Please complete the reCAPTCHA.");
+                isSubmitting = false;
+                setLoading(false);
+                return;
+            }
+            sendForm();
+            return;
+        }
+
         if (!recaptchaInput) {
             sendForm();
             return;

@@ -43,7 +43,7 @@
             <h2>Contact form</h2>
         </div>
 
-        <form class="contact-form" id="contact-form" action="https://formspree.io/f/mreakvvg" method="post" novalidate data-recaptcha-site-key="6LdCEW8sAAAAAH_NsJAhOqV0reSXxwNumB6mWqfV">
+        <form class="contact-form" id="contact-form" action="https://formspree.io/f/mreakvvg" method="post" novalidate data-recaptcha-site-key="6LdsFW8sAAAAABG-y1Wllo9mJgJmxfzKK6Jqukn7" data-recaptcha-version="v2">
             <div class="form-row">
                 <div class="form-field">
                     <label for="full-name">Full name *</label>
@@ -95,7 +95,9 @@
                 <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
             </div>
 
-            <input type="hidden" name="g-recaptcha-response" id="recaptcha-token" value="">
+            <div class="form-field">
+                <div class="g-recaptcha" data-sitekey="6LdsFW8sAAAAABG-y1Wllo9mJgJmxfzKK6Jqukn7"></div>
+            </div>
 
             <div class="form-actions">
                 <button class="btn-primary" type="submit" data-default-label="Send message">Send message</button>
@@ -129,7 +131,7 @@
 </footer>
 
 <!-- reCAPTCHA v3: replace YOUR_SITE_KEY and uncomment the line below -->
-<!-- reCAPTCHA v3 is loaded dynamically by script.js when a valid key is set. -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script src="script.js?v=20260217"></script>
 </body>
 </html>
