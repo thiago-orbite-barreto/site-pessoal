@@ -6,11 +6,17 @@ document.addEventListener("DOMContentLoaded", () => {
     initNavMenu();
     initScrollTopButton();
 
+    const themeIcon = themeBtn ? themeBtn.querySelector("img") : null;
+    const langIcon = langBtn ? langBtn.querySelector("img") : null;
+
     function updateThemeIcon() {
         if (!themeBtn) {
             return;
         }
-        themeBtn.textContent = body.classList.contains("dark-mode") ? "moon" : "sun";
+        const isDark = body.classList.contains("dark-mode");
+        if (themeIcon) {
+            themeIcon.src = isDark ? "assets/icons/moon.svg" : "assets/icons/sun.svg";
+        }
     }
 
     let savedTheme = null;
@@ -58,7 +64,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const path = window.location.pathname;
         const isEnglish = path.includes("_en") || path.includes("contact_en");
-        langBtn.textContent = isEnglish ? "en" : "pt";
+        if (langIcon) {
+            langIcon.src = "assets/icons/globe.svg";
+        }
+        langBtn.setAttribute("title", isEnglish ? "Switch to Portuguese" : "Switch to English");
     }
 
     updateLangIcon();

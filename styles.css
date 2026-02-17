@@ -46,12 +46,7 @@ body {
 }
 
 .nav-left::after {
-    content: "";
-    width: 1px;
-    height: 20px;
-    margin-left: 12px;
-    background: var(--accent);
-    opacity: 0.85;
+    content: none;
 }
 
 .nav-title {
@@ -119,14 +114,27 @@ body {
     background: none;
     border: 1px solid var(--border);
     border-radius: 6px;
-    width: 30px;
-    height: 24px;
+    width: 34px;
+    height: 28px;
     cursor: pointer;
     font-size: 0.75rem;
     line-height: 1;
     letter-spacing: 0.6px;
     text-transform: uppercase;
     color: var(--text);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-icon {
+    width: 16px;
+    height: 16px;
+    display: block;
+}
+
+body.dark-mode .nav-icon {
+    filter: invert(1);
 }
 
 :root {
@@ -720,8 +728,8 @@ body {
     }
 
     .nav-btn {
-        width: 30px;
-        height: 24px;
+        width: 32px;
+        height: 26px;
         font-size: 0.72rem;
     }
 
