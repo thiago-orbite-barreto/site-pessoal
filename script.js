@@ -344,7 +344,7 @@ function initContactForm() {
     };
 
     const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
-    const phoneRegex = /^[0-9\\s\\-+().]{7,20}$/;
+    const phoneRegex = /^[0-9\\s+().-]{7,20}$/;
 
     const setAlert = (type, text) => {
         if (!alertBox) {
