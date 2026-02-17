@@ -236,8 +236,8 @@ function getCurrentPageName() {
 
 function initNavMenu() {
     const siteNav = document.querySelector(".site-nav");
-    const toggleBtn = siteNav?.querySelector(".nav-toggle");
-    const navMenu = siteNav?.querySelector(".nav-menu");
+    const toggleBtn = siteNav ? siteNav.querySelector(".nav-toggle") : null;
+    const navMenu = siteNav ? siteNav.querySelector(".nav-menu") : null;
 
     if (!siteNav || !toggleBtn || !navMenu) {
         return;
@@ -369,7 +369,7 @@ function initContactForm() {
         }
 
         const wrapper = input.closest(".form-field");
-        const errorNode = wrapper?.querySelector(".field-error");
+        const errorNode = wrapper ? wrapper.querySelector(".field-error") : null;
 
         if (!wrapper || !errorNode) {
             return;
@@ -423,7 +423,7 @@ function initContactForm() {
         input.addEventListener("blur", () => validateField(key));
         input.addEventListener("input", () => {
             const wrapper = input.closest(".form-field");
-            if (wrapper?.classList.contains("is-invalid")) {
+            if (wrapper && wrapper.classList.contains("is-invalid")) {
                 validateField(key);
             }
         });
@@ -472,20 +472,22 @@ function initContactForm() {
                 form.reset();
                 Object.keys(fieldMap).forEach((key) => {
                     const input = fieldMap[key].input;
-                    const wrapper = input?.closest(".form-field");
-                    wrapper?.classList.remove("is-valid", "is-invalid");
-                    const errorNode = wrapper?.querySelector(".field-error");
+                    const wrapper = input ? input.closest(".form-field") : null;
+                    if (wrapper) {
+                        wrapper.classList.remove("is-valid", "is-invalid");
+                    }
+                    const errorNode = wrapper ? wrapper.querySelector(".field-error") : null;
                     if (errorNode) {
                         errorNode.textContent = "";
                     }
                 });
             })
             .catch((error) => {
-                const message = error?.message || "Unable to send your message. Please try again.";
+                const message = error && error.message ? error.message : "Unable to send your message. Please try again.";
                 setAlert("error", message);
-                if (error?.errors) {
+                if (error && error.errors) {
                     Object.keys(error.errors).forEach((key) => {
-                        if (fieldMap[key]?.input) {
+                        if (fieldMap[key] && fieldMap[key].input) {
                             setFieldState(fieldMap[key].input, false, error.errors[key]);
                         }
                     });
