@@ -521,24 +521,65 @@ function initContactForm() {
             });
     };
 
+    const loadRecaptchaScript = () => {
+        if (!recaptchaKey || recaptchaKey === "YOUR_SITE_KEY") {
+            return Promise.resolve(false);
+        }
+
+        if (window.grecaptcha && typeof window.grecaptcha.execute === "function") {
+            return Promise.resolve(true);
+        }
+
+        return new Promise((resolve, reject) => {
+            const existing = document.querySelector('script[data-recaptcha="v3"]');
+            if (existing) {
+                existing.addEventListener("load", () => resolve(true));
+                existing.addEventListener("error", () => reject(new Error("reCAPTCHA script failed to load.")));
+                return;
+            }
+
+            const script = document.createElement("script");
+            script.src = `https://www.google.com/recaptcha/api.js?render=${encodeURIComponent(recaptchaKey)}`;
+            script.async = true;
+            script.defer = true;
+            script.dataset.recaptcha = "v3";
+            script.addEventListener("load", () => resolve(true));
+            script.addEventListener("error", () => reject(new Error("reCAPTCHA script failed to load.")));
+            document.head.appendChild(script);
+        });
+    };
+
     const runRecaptcha = () => {
-        if (!recaptchaKey || recaptchaKey === "YOUR_SITE_KEY" || !window.grecaptcha || !recaptchaInput) {
+        if (!recaptchaInput) {
             sendForm();
             return;
         }
 
-        window.grecaptcha.ready(() => {
-            window.grecaptcha.execute(recaptchaKey, { action: "contact" })
-                .then((token) => {
-                    recaptchaInput.value = token || "";
+        loadRecaptchaScript()
+            .then((loaded) => {
+                if (!loaded || !window.grecaptcha) {
                     sendForm();
-                })
-                .catch(() => {
-                    setAlert("error", "reCAPTCHA validation failed. Please try again.");
-                    isSubmitting = false;
-                    setLoading(false);
+                    return;
+                }
+
+                window.grecaptcha.ready(() => {
+                    window.grecaptcha.execute(recaptchaKey, { action: "contact" })
+                        .then((token) => {
+                            recaptchaInput.value = token || "";
+                            sendForm();
+                        })
+                        .catch(() => {
+                            setAlert("error", "reCAPTCHA validation failed. Please try again.");
+                            isSubmitting = false;
+                            setLoading(false);
+                        });
                 });
-        });
+            })
+            .catch(() => {
+                setAlert("error", "reCAPTCHA could not be loaded. Please try again.");
+                isSubmitting = false;
+                setLoading(false);
+            });
     };
 
     form.addEventListener("submit", (event) => {
