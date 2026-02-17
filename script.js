@@ -66,6 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateFooterYearRange();
     initBlogPage();
+    initContactForm();
 });
 
 function updateFooterYearRange() {
@@ -289,5 +290,243 @@ function initScrollTopButton() {
 
     scrollBtn.addEventListener("click", () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+}
+
+function initContactForm() {
+    const form = document.querySelector(".contact-form");
+    if (!form) {
+        return;
+    }
+
+    const alertBox = document.getElementById("form-alert");
+    const submitBtn = form.querySelector("button[type=\"submit\"]");
+    const recaptchaKey = form.dataset.recaptchaSiteKey || "";
+    const recaptchaInput = document.getElementById("recaptcha-token");
+    let isSubmitting = false;
+
+    const fieldMap = {
+        name: {
+            input: document.getElementById("full-name"),
+            minLength: 3,
+            message: "Please enter your full name."
+        },
+        email: {
+            input: document.getElementById("email"),
+            minLength: 5,
+            message: "Please enter a valid email address."
+        },
+        subject: {
+            input: document.getElementById("subject"),
+            minLength: 3,
+            message: "Please enter a subject."
+        },
+        phone: {
+            input: document.getElementById("phone"),
+            optional: true,
+            message: "Please enter a valid phone number."
+        },
+        message: {
+            input: document.getElementById("message"),
+            minLength: 10,
+            message: "Please write at least 10 characters."
+        }
+    };
+
+    const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+    const phoneRegex = /^[0-9\\s\\-+().]{7,20}$/;
+
+    const setAlert = (type, text) => {
+        if (!alertBox) {
+            return;
+        }
+        alertBox.textContent = text;
+        alertBox.classList.toggle("is-success", type === "success");
+        alertBox.classList.toggle("is-error", type === "error");
+    };
+
+    const resetAlert = () => {
+        if (!alertBox) {
+            return;
+        }
+        alertBox.textContent = "";
+        alertBox.classList.remove("is-success", "is-error");
+    };
+
+    const setFieldState = (input, isValid, message) => {
+        if (!input) {
+            return;
+        }
+
+        const wrapper = input.closest(".form-field");
+        const errorNode = wrapper?.querySelector(".field-error");
+
+        if (!wrapper || !errorNode) {
+            return;
+        }
+
+        wrapper.classList.toggle("is-invalid", !isValid);
+        wrapper.classList.toggle("is-valid", isValid);
+        errorNode.textContent = isValid ? "" : message;
+    };
+
+    const validateField = (key) => {
+        const config = fieldMap[key];
+        if (!config || !config.input) {
+            return true;
+        }
+
+        const value = config.input.value.trim();
+
+        if (config.optional && value.length === 0) {
+            setFieldState(config.input, true, "");
+            return true;
+        }
+
+        if (key === "email") {
+            const isValid = emailRegex.test(value);
+            setFieldState(config.input, isValid, config.message);
+            return isValid;
+        }
+
+        if (key === "phone") {
+            const isValid = phoneRegex.test(value);
+            setFieldState(config.input, isValid, config.message);
+            return isValid;
+        }
+
+        const minLength = config.minLength || 1;
+        const isValid = value.length >= minLength;
+        setFieldState(config.input, isValid, config.message);
+        return isValid;
+    };
+
+    const validateForm = () => {
+        return Object.keys(fieldMap).every((key) => validateField(key));
+    };
+
+    Object.keys(fieldMap).forEach((key) => {
+        const input = fieldMap[key].input;
+        if (!input) {
+            return;
+        }
+        input.addEventListener("blur", () => validateField(key));
+        input.addEventListener("input", () => {
+            const wrapper = input.closest(".form-field");
+            if (wrapper?.classList.contains("is-invalid")) {
+                validateField(key);
+            }
+        });
+    });
+
+    const setLoading = (isLoading) => {
+        if (!submitBtn) {
+            return;
+        }
+        submitBtn.disabled = isLoading;
+        submitBtn.classList.toggle("is-loading", isLoading);
+        const defaultLabel = submitBtn.dataset.defaultLabel || submitBtn.textContent;
+        submitBtn.textContent = isLoading ? "Sending..." : defaultLabel;
+    };
+
+    const ensureHttps = () => {
+        const isLocalhost = window.location.hostname === "localhost";
+        if (window.location.protocol === "https:" || isLocalhost) {
+            return true;
+        }
+        setAlert("error", "This form can only be submitted over HTTPS.");
+        return false;
+    };
+
+    const sendForm = () => {
+        const formData = new FormData(form);
+        setLoading(true);
+
+        fetch(form.action, {
+            method: "POST",
+            body: formData,
+            headers: {
+                "Accept": "application/json"
+            },
+            credentials: "same-origin"
+        })
+            .then(async (response) => {
+                const data = await response.json().catch(() => ({}));
+                if (!response.ok || !data.ok) {
+                    throw data;
+                }
+                return data;
+            })
+            .then((data) => {
+                setAlert("success", data.message || "Message sent successfully.");
+                form.reset();
+                Object.keys(fieldMap).forEach((key) => {
+                    const input = fieldMap[key].input;
+                    const wrapper = input?.closest(".form-field");
+                    wrapper?.classList.remove("is-valid", "is-invalid");
+                    const errorNode = wrapper?.querySelector(".field-error");
+                    if (errorNode) {
+                        errorNode.textContent = "";
+                    }
+                });
+            })
+            .catch((error) => {
+                const message = error?.message || "Unable to send your message. Please try again.";
+                setAlert("error", message);
+                if (error?.errors) {
+                    Object.keys(error.errors).forEach((key) => {
+                        if (fieldMap[key]?.input) {
+                            setFieldState(fieldMap[key].input, false, error.errors[key]);
+                        }
+                    });
+                }
+            })
+            .finally(() => {
+                isSubmitting = false;
+                setLoading(false);
+            });
+    };
+
+    const runRecaptcha = () => {
+        if (!recaptchaKey || !window.grecaptcha || !recaptchaInput) {
+            sendForm();
+            return;
+        }
+
+        window.grecaptcha.ready(() => {
+            window.grecaptcha.execute(recaptchaKey, { action: "contact" })
+                .then((token) => {
+                    recaptchaInput.value = token || "";
+                    sendForm();
+                })
+                .catch(() => {
+                    setAlert("error", "reCAPTCHA validation failed. Please try again.");
+                    isSubmitting = false;
+                    setLoading(false);
+                });
+        });
+    };
+
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        if (isSubmitting) {
+            return;
+        }
+
+        resetAlert();
+
+        if (!ensureHttps()) {
+            return;
+        }
+
+        const isValid = validateForm();
+        if (!isValid) {
+            setAlert("error", "Please review the highlighted fields.");
+            return;
+        }
+
+        isSubmitting = true;
+        runRecaptcha();
     });
 }

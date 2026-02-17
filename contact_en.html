@@ -34,33 +34,82 @@
 
 <header class="main-header">
     <h1 class="ff-title">CONTACT</h1>
-    <p class="subtitle">First version of the contact page</p>
+    <p class="subtitle">Send a message and I will reply as soon as possible.</p>
 </header>
 
 <main class="content-area">
-    <section class="glass-box">
-        <h2>Initial plan</h2>
-        <p>This page starts with a base structure for professional contact and can evolve into a complete contact form.</p>
-    </section>
-
-    <section class="glass-box contact-grid">
-        <article>
-            <h3>Channels</h3>
-            <ul class="contact-list">
-                <li>Professional email</li>
-                <li>LinkedIn</li>
-                <li>GitHub</li>
+    <section class="glass-box contact-panel">
+        <div class="contact-panel__intro">
+            <h2>Contact form</h2>
+            <p class="contact-lead">Use the form below to share your request. Required fields are marked with *.</p>
+            <ul class="contact-highlights">
+                <li>Clear feedback for every field</li>
+                <li>Anti-spam honeypot enabled</li>
+                <li>HTTPS-only submission</li>
             </ul>
-        </article>
+        </div>
 
-        <article>
-            <h3>Next steps</h3>
-            <ul class="contact-list">
-                <li>Validated form fields</li>
-                <li>Success/error feedback</li>
-                <li>Anti-spam strategy</li>
-            </ul>
-        </article>
+        <form class="contact-form" id="contact-form" action="contact_submit.php" method="post" novalidate data-recaptcha-site-key="YOUR_SITE_KEY">
+            <div class="form-row">
+                <div class="form-field">
+                    <label for="full-name">Full name *</label>
+                    <input class="form-control" type="text" id="full-name" name="name" autocomplete="name" required aria-describedby="name-help name-error">
+                    <small class="field-hint" id="name-help">Please provide your first and last name.</small>
+                    <small class="field-error" id="name-error" aria-live="polite"></small>
+                </div>
+
+                <div class="form-field">
+                    <label for="email">Email *</label>
+                    <input class="form-control" type="email" id="email" name="email" autocomplete="email" required aria-describedby="email-help email-error">
+                    <small class="field-hint" id="email-help">We will only use this to reply to you.</small>
+                    <small class="field-error" id="email-error" aria-live="polite"></small>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-field">
+                    <label for="subject">Subject *</label>
+                    <input class="form-control" type="text" id="subject" name="subject" autocomplete="off" required aria-describedby="subject-help subject-error">
+                    <small class="field-hint" id="subject-help">Summarize the topic in a few words.</small>
+                    <small class="field-error" id="subject-error" aria-live="polite"></small>
+                </div>
+
+                <div class="form-field">
+                    <label for="phone">Phone (optional)</label>
+                    <input class="form-control" type="tel" id="phone" name="phone" autocomplete="tel" aria-describedby="phone-help phone-error">
+                    <small class="field-hint" id="phone-help">Include country and area code if relevant.</small>
+                    <small class="field-error" id="phone-error" aria-live="polite"></small>
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label for="message">Message *</label>
+                <textarea class="form-control" id="message" name="message" rows="6" required aria-describedby="message-help message-error"></textarea>
+                <small class="field-hint" id="message-help">Tell me what you need and the expected timeline.</small>
+                <small class="field-error" id="message-error" aria-live="polite"></small>
+            </div>
+
+            <div class="form-field consent-field">
+                <label class="consent">
+                    <input type="checkbox" name="consent" value="yes">
+                    <span>Autorizo o uso dos meus dados para contato.</span>
+                </label>
+            </div>
+
+            <div class="hp-field" aria-hidden="true">
+                <label for="website">Leave this field empty</label>
+                <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+            </div>
+
+            <input type="hidden" name="recaptcha_token" id="recaptcha-token" value="">
+
+            <div class="form-actions">
+                <button class="btn-primary" type="submit" data-default-label="Send message">Send message</button>
+                <p class="form-note">This form only works over HTTPS.</p>
+            </div>
+
+            <div id="form-alert" class="form-alert" role="status" aria-live="polite"></div>
+        </form>
     </section>
 </main>
 
@@ -85,10 +134,7 @@
     </nav>
 </footer>
 
+<script src="https://www.google.com/recaptcha/api.js?render=YOUR_SITE_KEY"></script>
 <script src="script.js"></script>
 </body>
 </html>
-
-
-
-
