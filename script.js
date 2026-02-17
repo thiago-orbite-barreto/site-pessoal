@@ -13,7 +13,13 @@ document.addEventListener("DOMContentLoaded", () => {
         themeBtn.textContent = body.classList.contains("dark-mode") ? "moon" : "sun";
     }
 
-    const savedTheme = localStorage.getItem("theme");
+    let savedTheme = null;
+    try {
+        savedTheme = localStorage.getItem("theme");
+    } catch (error) {
+        savedTheme = null;
+    }
+
     if (savedTheme === "dark") {
         body.classList.add("dark-mode");
     }
@@ -22,10 +28,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (themeBtn) {
         themeBtn.addEventListener("click", () => {
             body.classList.toggle("dark-mode");
-            localStorage.setItem(
-                "theme",
-                body.classList.contains("dark-mode") ? "dark" : "light"
-            );
+            try {
+                localStorage.setItem(
+                    "theme",
+                    body.classList.contains("dark-mode") ? "dark" : "light"
+                );
+            } catch (error) {
+                // Ignore storage errors (private mode / disabled storage).
+            }
             updateThemeIcon();
         });
     }
