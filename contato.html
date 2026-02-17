@@ -34,33 +34,82 @@
 
 <header class="main-header">
     <h1 class="ff-title">CONTATO</h1>
-    <p class="subtitle">Primeira vers&atilde;o da p&aacute;gina de contato</p>
+    <p class="subtitle">Envie uma mensagem e retornarei o quanto antes.</p>
 </header>
 
 <main class="content-area">
-    <section class="glass-box">
-        <h2>Plano inicial</h2>
-        <p>Esta p&aacute;gina come&ccedil;a com uma estrutura base para contatos profissionais e pode evoluir para um formul&aacute;rio completo.</p>
-    </section>
-
-    <section class="glass-box contact-grid">
-        <article>
-            <h3>Canais</h3>
-            <ul class="contact-list">
-                <li>Email profissional</li>
-                <li>LinkedIn</li>
-                <li>GitHub</li>
+    <section class="glass-box contact-panel">
+        <div class="contact-panel__intro">
+            <h2>Formul&aacute;rio de contato</h2>
+            <p class="contact-lead">Use o formul&aacute;rio abaixo para enviar sua solicita&ccedil;&atilde;o. Campos obrigat&oacute;rios est&atilde;o marcados com *.</p>
+            <ul class="contact-highlights">
+                <li>Feedback claro para cada campo</li>
+                <li>Honeypot anti-spam ativo</li>
+                <li>Envio apenas via HTTPS</li>
             </ul>
-        </article>
+        </div>
 
-        <article>
-            <h3>Pr&oacute;ximos passos</h3>
-            <ul class="contact-list">
-                <li>Formul&aacute;rio com valida&ccedil;&atilde;o</li>
-                <li>Mensagem de sucesso/erro</li>
-                <li>Prote&ccedil;&atilde;o anti-spam</li>
-            </ul>
-        </article>
+        <form class="contact-form" id="contact-form" action="https://formspree.io/f/mreakvvg" method="post" novalidate data-recaptcha-site-key="YOUR_SITE_KEY">
+            <div class="form-row">
+                <div class="form-field">
+                    <label for="full-name">Nome completo *</label>
+                    <input class="form-control" type="text" id="full-name" name="name" autocomplete="name" required aria-describedby="name-help name-error">
+                    <small class="field-hint" id="name-help">Informe nome e sobrenome.</small>
+                    <small class="field-error" id="name-error" aria-live="polite"></small>
+                </div>
+
+                <div class="form-field">
+                    <label for="email">E-mail *</label>
+                    <input class="form-control" type="email" id="email" name="email" autocomplete="email" required aria-describedby="email-help email-error">
+                    <small class="field-hint" id="email-help">Usaremos este e-mail apenas para responder.</small>
+                    <small class="field-error" id="email-error" aria-live="polite"></small>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-field">
+                    <label for="subject">Assunto *</label>
+                    <input class="form-control" type="text" id="subject" name="subject" autocomplete="off" required aria-describedby="subject-help subject-error">
+                    <small class="field-hint" id="subject-help">Resuma o tema em poucas palavras.</small>
+                    <small class="field-error" id="subject-error" aria-live="polite"></small>
+                </div>
+
+                <div class="form-field">
+                    <label for="phone">Telefone (opcional)</label>
+                    <input class="form-control" type="tel" id="phone" name="phone" autocomplete="tel" aria-describedby="phone-help phone-error">
+                    <small class="field-hint" id="phone-help">Inclua DDI e DDD, se necess&aacute;rio.</small>
+                    <small class="field-error" id="phone-error" aria-live="polite"></small>
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label for="message">Mensagem *</label>
+                <textarea class="form-control" id="message" name="message" rows="6" required aria-describedby="message-help message-error"></textarea>
+                <small class="field-hint" id="message-help">Descreva o que voc&ecirc; precisa e o prazo desejado.</small>
+                <small class="field-error" id="message-error" aria-live="polite"></small>
+            </div>
+
+            <div class="form-field consent-field">
+                <label class="consent">
+                    <input type="checkbox" name="consent" value="yes">
+                    <span>Autorizo o uso dos meus dados para contato.</span>
+                </label>
+            </div>
+
+            <div class="hp-field" aria-hidden="true">
+                <label for="website">Deixe este campo vazio</label>
+                <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+            </div>
+
+            <input type="hidden" name="recaptcha_token" id="recaptcha-token" value="">
+
+            <div class="form-actions">
+                <button class="btn-primary" type="submit" data-default-label="Enviar mensagem">Enviar mensagem</button>
+                <p class="form-note">Este formul&aacute;rio funciona apenas via HTTPS.</p>
+            </div>
+
+            <div id="form-alert" class="form-alert" role="status" aria-live="polite"></div>
+        </form>
     </section>
 </main>
 
@@ -85,7 +134,7 @@
     </nav>
 </footer>
 
+<script src="https://www.google.com/recaptcha/api.js?render=YOUR_SITE_KEY"></script>
 <script src="script.js?v=20260217"></script>
 </body>
 </html>
-
