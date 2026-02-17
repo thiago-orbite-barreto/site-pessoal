@@ -459,17 +459,32 @@ function initContactForm() {
         const formData = new FormData(form);
         setLoading(true);
 
-        fetch(form.action, {
+        let actionUrl = form.action;
+        let requestOrigin = "";
+        try {
+            requestOrigin = new URL(actionUrl, window.location.href).origin;
+        } catch (error) {
+            requestOrigin = "";
+        }
+        const isSameOrigin = requestOrigin !== "" && requestOrigin === window.location.origin;
+
+        fetch(actionUrl, {
             method: "POST",
             body: formData,
             headers: {
                 "Accept": "application/json"
             },
-            credentials: "same-origin"
+            mode: isSameOrigin ? "same-origin" : "cors",
+            credentials: isSameOrigin ? "same-origin" : "omit"
         })
             .then(async (response) => {
-                const data = await response.json().catch(() => ({}));
-                if (!response.ok || !data.ok) {
+                const contentType = response.headers.get("content-type") || "";
+                const isJson = contentType.includes("application/json");
+                const data = isJson ? await response.json().catch(() => ({})) : {};
+                if (!response.ok) {
+                    throw data;
+                }
+                if (isJson && data.ok === false) {
                     throw data;
                 }
                 return data;
