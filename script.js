@@ -311,7 +311,7 @@ function initContactForm() {
 
     const alertBox = document.getElementById("form-alert");
     const submitBtn = form.querySelector("button[type=\"submit\"]");
-    const recaptchaKey = form.dataset.recaptchaSiteKey || "";
+    const recaptchaKey = (form.dataset.recaptchaSiteKey || "").trim();
     const recaptchaInput = document.getElementById("recaptcha-token");
     let isSubmitting = false;
 
@@ -522,7 +522,7 @@ function initContactForm() {
     };
 
     const runRecaptcha = () => {
-        if (!recaptchaKey || !window.grecaptcha || !recaptchaInput) {
+        if (!recaptchaKey || recaptchaKey === "YOUR_SITE_KEY" || !window.grecaptcha || !recaptchaInput) {
             sendForm();
             return;
         }
