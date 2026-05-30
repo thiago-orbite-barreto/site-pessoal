@@ -88,18 +88,40 @@ document.addEventListener("DOMContentLoaded", () => {
             const enIndex = segments.indexOf('en');
             if (enIndex !== -1) {
                 segments.splice(enIndex, 1);
-            } else {
-                // Insert 'en' after the first segment if it exists (preserve baseurl), otherwise at start
-                if (segments.length >= 1) {
-                    segments.splice(1, 0, 'en');
+                const newPath = '/' + segments.join('/') + (path.endsWith('/') ? '/' : '/');
+                window.location.href = newPath + search + hash;
+                return;
+            }
+
+            // Map common Portuguese pages to their English counterparts
+            const last = segments[segments.length - 1] || '';
+            const base = segments[0] || '';
+
+            let newSegments = segments.slice();
+
+            if (last === '' || /^index(\.html)?$/.test(last) || segments.length === 1) {
+                // root/home page -> /<base>/en/
+                if (base) {
+                    newSegments = [base, 'en'];
                 } else {
-                    segments.splice(0, 0, 'en');
+                    newSegments = ['en'];
+                }
+            } else if (/^blog(\/|$)|blog\.html$/.test(last) || last === 'blog') {
+                newSegments = base ? [base, 'en', 'blog'] : ['en', 'blog'];
+            } else if (/^curriculo(\.html)?$/.test(last) || /curriculo/.test(last)) {
+                newSegments = base ? [base, 'en', 'resume'] : ['en', 'resume'];
+            } else if (/^contato(\.html)?$/.test(last) || /contato/.test(last)) {
+                newSegments = base ? [base, 'en', 'contact'] : ['en', 'contact'];
+            } else {
+                // Fallback: insert 'en' after the first segment (preserve baseurl when present)
+                if (segments.length >= 1) {
+                    newSegments.splice(1, 0, 'en');
+                } else {
+                    newSegments.splice(0, 0, 'en');
                 }
             }
 
-            const newPath = '/' + segments.join('/') + (path.endsWith('/') ? '/' : '/');
-
-            // Navigate to the new path preserving search/hash
+            const newPath = '/' + newSegments.join('/') + (path.endsWith('/') ? '/' : '/');
             window.location.href = newPath + search + hash;
         });
     }
