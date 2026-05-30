@@ -79,25 +79,28 @@ document.addEventListener("DOMContentLoaded", () => {
     if (langBtn) {
         langBtn.addEventListener("click", () => {
             const path = window.location.pathname;
-            let newPath;
-            if (isPathEnglish(path)) {
-                // remove the first '/en' segment
-                newPath = path.replace(/\/en\//, '/');
-            } else {
-                // add '/en' after base (handle trailing slash)
-                if (path.endsWith('/')) {
-                    newPath = path + 'en/';
-                } else {
-                    newPath = path + '/en/';
-                }
-            }
-            // preserve search and hash
             const search = window.location.search || '';
             const hash = window.location.hash || '';
-            window.location.pathname = newPath;
-            // append search/hash
-            window.location.search = search;
-            window.location.hash = hash;
+
+            const segments = path.split('/').filter(Boolean);
+
+            // If there's an 'en' segment anywhere, remove the first occurrence
+            const enIndex = segments.indexOf('en');
+            if (enIndex !== -1) {
+                segments.splice(enIndex, 1);
+            } else {
+                // Insert 'en' after the first segment if it exists (preserve baseurl), otherwise at start
+                if (segments.length >= 1) {
+                    segments.splice(1, 0, 'en');
+                } else {
+                    segments.splice(0, 0, 'en');
+                }
+            }
+
+            const newPath = '/' + segments.join('/') + (path.endsWith('/') ? '/' : '/');
+
+            // Navigate to the new path preserving search/hash
+            window.location.href = newPath + search + hash;
         });
     }
 
@@ -253,12 +256,7 @@ function slugify(text) {
 function getCurrentPageName() {
     const pathSegments = window.location.pathname.split("/").filter(Boolean);
     const currentPath = pathSegments[pathSegments.length - 1] || "";
-
-    if (currentPath.endsWith(".html")) {
-        return currentPath;
-    }
-
-    return document.documentElement.lang === "en" ? "index_en.html" : "index.html";
+    return currentPath;
 }
 
 function initNavMenu() {
