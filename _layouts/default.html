@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: 'pt-BR' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ page.title | default: site.title }}</title>
+  <meta name="description" content="{{ page.description | default: site.description }}">
+  <link rel="stylesheet" href="{{ '/assets/css/styles.css' | relative_url }}">
+</head>
+<body>
+  <header class="top-utility">
+    <div class="utility-inner">
+      <button id="theme-toggle" class="nav-btn" type="button" aria-label="Toggle theme"><img class="nav-icon nav-icon--theme" src="{{ '/assets/icons/sun.svg' | relative_url }}" alt=""></button>
+      <button id="lang-toggle" class="nav-btn" type="button" aria-label="Toggle language">
+        {% if page.lang == 'en' %}
+          <img class="nav-icon nav-icon--lang" src="{{ '/assets/icons/flag-us.svg' | relative_url }}" alt="US flag">
+        {% else %}
+          <img class="nav-icon nav-icon--lang" src="{{ '/assets/icons/flag-br.svg' | relative_url }}" alt="BR flag">
+        {% endif %}
+      </button>
+    </div>
+  </header>
+
+  <nav class="site-nav">
+    <div class="nav-left">
+      <a href="{{ '/' | relative_url }}" class="nav-title">{{ site.title }}</a>
+    </div>
+
+    <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">&#9776;</button>
+
+    <div class="nav-menu">
+      <div class="nav-center">
+        {% if page.lang == 'en' %}
+          <a href="{{ '/en/blog/' | relative_url }}" class="nav-link">Blog</a>
+          <a href="{{ '/en/resume/' | relative_url }}" class="nav-link">Resume</a>
+          <a href="{{ '/en/contact/' | relative_url }}" class="nav-link">Contact</a>
+        {% else %}
+          <a href="{{ '/blog/' | relative_url }}" class="nav-link">Blog</a>
+          <a href="{{ '/curriculo.html' | relative_url }}" class="nav-link">Currículo</a>
+          <a href="{{ '/contato.html' | relative_url }}" class="nav-link">Contato</a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    {{ content }}
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; {{ site.title }} - {{ site.time | date: "%Y" }}</p>
+  </footer>
+
+  <script src="{{ '/script.js' | relative_url }}"></script>
+</body>
+</html>

@@ -1,137 +1,84 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Contato | Thiago Orbite Barreto</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-
-<header class="top-utility">
-    <div class="utility-inner">
-        <button id="theme-toggle" class="nav-btn" type="button" aria-label="Alternar modo"><img class="nav-icon nav-icon--theme" src="assets/icons/sun.svg" alt=""></button>
-        <button id="lang-toggle" class="nav-btn" type="button" aria-label="Alternar idioma"><img class="nav-icon nav-icon--lang" src="assets/icons/flag-br.svg" alt=""></button>
-    </div>
-</header>
-
-<nav class="site-nav">
-    <div class="nav-left">
-        <a href="index.html" class="nav-title">THIAGO ORBITE BARRETO</a>
-    </div>
-
-    <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">&#9776;</button>
-
-    <div class="nav-menu">
-        <div class="nav-center">
-            <a href="blog.html" class="nav-link">Blog</a>
-            <a href="curriculo.html" class="nav-link">Curr&iacute;culo</a>
-            <a href="contato.html" class="nav-link">Contato</a>
-        </div>
-    </div>
-</nav>
+---
+layout: default
+title: "Contato"
+permalink: /contato.html
+---
 
 <header class="main-header">
     <h1 class="ff-title">CONTATO</h1>
     <p class="subtitle">Me envie uma menssagem e te responderei assim que possível.</p>
 </header>
 
-<main class="content-area">
-    <section class="glass-box contact-panel">
-        <div class="contact-panel__intro">
-            <h2>Formul&aacute;rio de contato</h2>
+<section class="glass-box contact-panel">
+    <div class="contact-panel__intro">
+        <h2>Formul&aacute;rio de contato</h2>
+    </div>
+
+    <form class="contact-form" id="contact-form" action="https://formspree.io/f/mreakvvg" method="post" novalidate data-recaptcha-site-key="6LdsFW8sAAAAABG-y1Wllo9mJgJmxfzKK6Jqukn7" data-recaptcha-version="v2">
+        <div class="form-row">
+            <div class="form-field">
+                <label for="full-name">Nome completo *</label>
+                <input class="form-control" type="text" id="full-name" name="name" autocomplete="name" required aria-describedby="name-help name-error">
+                <small class="field-hint" id="name-help">Informe nome e sobrenome.</small>
+                <small class="field-error" id="name-error" aria-live="polite"></small>
+            </div>
+
+            <div class="form-field">
+                <label for="email">E-mail *</label>
+                <input class="form-control" type="email" id="email" name="email" autocomplete="email" required aria-describedby="email-help email-error">
+                <small class="field-hint" id="email-help">Usaremos este e-mail apenas para responder.</small>
+                <small class="field-error" id="email-error" aria-live="polite"></small>
+            </div>
         </div>
 
-        <form class="contact-form" id="contact-form" action="https://formspree.io/f/mreakvvg" method="post" novalidate data-recaptcha-site-key="6LdsFW8sAAAAABG-y1Wllo9mJgJmxfzKK6Jqukn7" data-recaptcha-version="v2">
-            <div class="form-row">
-                <div class="form-field">
-                    <label for="full-name">Nome completo *</label>
-                    <input class="form-control" type="text" id="full-name" name="name" autocomplete="name" required aria-describedby="name-help name-error">
-                    <small class="field-hint" id="name-help">Informe nome e sobrenome.</small>
-                    <small class="field-error" id="name-error" aria-live="polite"></small>
-                </div>
-
-                <div class="form-field">
-                    <label for="email">E-mail *</label>
-                    <input class="form-control" type="email" id="email" name="email" autocomplete="email" required aria-describedby="email-help email-error">
-                    <small class="field-hint" id="email-help">Usaremos este e-mail apenas para responder.</small>
-                    <small class="field-error" id="email-error" aria-live="polite"></small>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-field">
-                    <label for="subject">Assunto *</label>
-                    <input class="form-control" type="text" id="subject" name="subject" autocomplete="off" required aria-describedby="subject-help subject-error">
-                    <small class="field-hint" id="subject-help">Resuma o tema em poucas palavras.</small>
-                    <small class="field-error" id="subject-error" aria-live="polite"></small>
-                </div>
-
-                <div class="form-field">
-                    <label for="phone">Telefone (opcional)</label>
-                    <input class="form-control" type="tel" id="phone" name="phone" autocomplete="tel" aria-describedby="phone-help phone-error">
-                    <small class="field-hint" id="phone-help">Inclua DDI e DDD, se necess&aacute;rio.</small>
-                    <small class="field-error" id="phone-error" aria-live="polite"></small>
-                </div>
+        <div class="form-row">
+            <div class="form-field">
+                <label for="subject">Assunto *</label>
+                <input class="form-control" type="text" id="subject" name="subject" autocomplete="off" required aria-describedby="subject-help subject-error">
+                <small class="field-hint" id="subject-help">Resuma o tema em poucas palavras.</small>
+                <small class="field-error" id="subject-error" aria-live="polite"></small>
             </div>
 
             <div class="form-field">
-                <label for="message">Mensagem *</label>
-                <textarea class="form-control" id="message" name="message" rows="6" required aria-describedby="message-help message-error"></textarea>
-                <small class="field-hint" id="message-help">Descreva o que voc&ecirc; precisa e o prazo desejado.</small>
-                <small class="field-error" id="message-error" aria-live="polite"></small>
+                <label for="phone">Telefone (opcional)</label>
+                <input class="form-control" type="tel" id="phone" name="phone" autocomplete="tel" aria-describedby="phone-help phone-error">
+                <small class="field-hint" id="phone-help">Inclua DDI e DDD, se necess&aacute;rio.</small>
+                <small class="field-error" id="phone-error" aria-live="polite"></small>
             </div>
+        </div>
 
-            <div class="form-field consent-field">
-                <label class="consent">
-                    <input type="checkbox" name="consent" value="yes">
-                    <span>Autorizo o uso dos meus dados para contato.</span>
-                </label>
-            </div>
+        <div class="form-field">
+            <label for="message">Mensagem *</label>
+            <textarea class="form-control" id="message" name="message" rows="6" required aria-describedby="message-help message-error"></textarea>
+            <small class="field-hint" id="message-help">Descreva o que voc&ecirc; precisa e o prazo desejado.</small>
+            <small class="field-error" id="message-error" aria-live="polite"></small>
+        </div>
 
-            <div class="hp-field" aria-hidden="true">
-                <label for="website">Deixe este campo vazio</label>
-                <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
-            </div>
+        <div class="form-field consent-field">
+            <label class="consent">
+                <input type="checkbox" name="consent" value="yes">
+                <span>Autorizo o uso dos meus dados para contato.</span>
+            </label>
+        </div>
 
-            <div class="form-field">
-                <div class="g-recaptcha" data-sitekey="6LdsFW8sAAAAABG-y1Wllo9mJgJmxfzKK6Jqukn7"></div>
-            </div>
+        <div class="hp-field" aria-hidden="true">
+            <label for="website">Deixe este campo vazio</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+        </div>
 
-            <div class="form-actions">
-                <button class="btn-primary" type="submit" data-default-label="Enviar mensagem">Enviar mensagem</button>
-                <p class="form-note">Este formul&aacute;rio funciona apenas via HTTPS.</p>
-            </div>
+        <div class="form-field">
+            <div class="g-recaptcha" data-sitekey="6LdsFW8sAAAAABG-y1Wllo9mJgJmxfzKK6Jqukn7"></div>
+        </div>
 
-            <div id="form-alert" class="form-alert" role="status" aria-live="polite"></div>
-        </form>
-    </section>
-</main>
+        <div class="form-actions">
+            <button class="btn-primary" type="submit" data-default-label="Enviar mensagem">Enviar mensagem</button>
+            <p class="form-note">Este formul&aacute;rio funciona apenas via HTTPS.</p>
+        </div>
 
-<footer class="site-footer">
-    <p>&copy; <span class="footer-year-range" data-start-year="2025"></span> Thiago Orbite Barreto</p>
-    <nav class="social-links" aria-label="Social media links">
-        <a class="social-link" href="https://www.facebook.com/thiago.orbite.barreto.2025/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook">
-            <img class="social-icon" src="assets/icons/facebook.svg" alt="Facebook">
-        </a>
-        <a class="social-link" href="https://www.instagram.com/thiagoorbitebarreto/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram">
-            <img class="social-icon" src="assets/icons/instagram.svg" alt="Instagram">
-        </a>
-        <a class="social-link" href="https://www.threads.com/@thiagoorbitebarreto" target="_blank" rel="noopener noreferrer" aria-label="Threads" title="Threads">
-            <img class="social-icon" src="assets/icons/threads.svg" alt="Threads">
-        </a>
-        <a class="social-link" href="https://x.com/thiago_orbite_" target="_blank" rel="noopener noreferrer" aria-label="X" title="X">
-            <img class="social-icon" src="assets/icons/x.svg" alt="X">
-        </a>
-        <a class="social-link" href="https://www.linkedin.com/in/thiagoorbitebarreto/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn">
-            <img class="social-icon" src="assets/icons/linkedin.svg" alt="LinkedIn">
-        </a>
-    </nav>
-</footer>
+        <div id="form-alert" class="form-alert" role="status" aria-live="polite"></div>
+    </form>
+</section>
 
-<!-- reCAPTCHA v3: substitua YOUR_SITE_KEY e descomente a linha abaixo -->
+<!-- Carregar reCAPTCHA (mantido aqui porque é específico desta página) -->
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-<script src="script.js?v=20260217"></script>
-</body>
-</html>
+

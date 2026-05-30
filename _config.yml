@@ -1,0 +1,7 @@
+title: "Thiago Orbite Barreto"
+description: "Site pessoal convertido para Jekyll"
+url: "https://github.com/thiago-orbite-barreto/site-pessoal"
+baseurl: ""
+markdown: kramdown
+permalink: /:year/:month/:day/:title/
+#theme: minima
