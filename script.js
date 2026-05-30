@@ -9,13 +9,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const themeIcon = themeBtn ? themeBtn.querySelector("img") : null;
     const langIcon = langBtn ? langBtn.querySelector("img") : null;
 
+    // Derive site base from stylesheet href so icon paths work with `baseurl`
+    const stylesheetNode = document.querySelector('link[rel="stylesheet"]');
+    let siteBase = "";
+    try {
+        if (stylesheetNode && stylesheetNode.href) {
+            // Remove /assets/css/... to get site base (may be absolute URL)
+            siteBase = stylesheetNode.href.replace(/\/assets\/css\/.*$/, '');
+        }
+    } catch (e) {
+        siteBase = '';
+    }
+
     function updateThemeIcon() {
         if (!themeBtn) {
             return;
         }
         const isDark = body.classList.contains("dark-mode");
         if (themeIcon) {
-            themeIcon.src = isDark ? "assets/icons/moon.svg" : "assets/icons/sun.svg";
+            themeIcon.src = (siteBase || '') + "/assets/icons/" + (isDark ? "moon.svg" : "sun.svg");
             themeIcon.alt = isDark ? "Modo escuro" : "Modo claro";
         }
     }
@@ -66,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const path = window.location.pathname;
         const isEnglish = path.includes("_en") || path.includes("contact_en");
         if (langIcon) {
-            langIcon.src = isEnglish ? "assets/icons/flag-us.svg" : "assets/icons/flag-br.svg";
+            langIcon.src = (siteBase || '') + "/assets/icons/" + (isEnglish ? "flag-us.svg" : "flag-br.svg");
             langIcon.alt = isEnglish ? "English" : "Português";
         }
         langBtn.setAttribute("title", isEnglish ? "Switch to Portuguese" : "Switch to English");
@@ -117,7 +129,7 @@ function initBlogPage() {
 
     const isEnglish = document.documentElement.lang === "en";
 
-    const posts = [];
+    const posts = window.SITE_POSTS || [];
 
     const normalizedPosts = posts
         .slice()
