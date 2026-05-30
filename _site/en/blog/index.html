@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Blog — EN</title>
+  <meta name="description" content="Site pessoal convertido para Jekyll">
+  <link rel="stylesheet" href="/site-pessoal/assets/css/styles.css">
+</head>
+<body>
+  <header class="top-utility">
+    <div class="utility-inner">
+      <button id="theme-toggle" class="nav-btn" type="button" aria-label="Toggle theme"><img class="nav-icon nav-icon--theme" src="/site-pessoal/assets/icons/sun.svg" alt=""></button>
+      <button id="lang-toggle" class="nav-btn" type="button" aria-label="Toggle language">
+        
+          <img class="nav-icon nav-icon--lang" src="/site-pessoal/assets/icons/flag-us.svg" alt="US flag">
+        
+      </button>
+    </div>
+  </header>
+
+  <nav class="site-nav">
+    <div class="nav-left">
+      <a href="/site-pessoal/" class="nav-title">Thiago Orbite Barreto</a>
+    </div>
+
+    <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">&#9776;</button>
+
+    <div class="nav-menu">
+      <div class="nav-center">
+        
+          <a href="/site-pessoal/en/blog/" class="nav-link">Blog</a>
+          <a href="/site-pessoal/en/resume/" class="nav-link">Resume</a>
+          <a href="/site-pessoal/en/contact/" class="nav-link">Contact</a>
+        
+      </div>
+    </div>
+  </nav>
+
+  <main class="content-area">
+    <header class="main-header">
+    <h1 class="ff-title">BLOG</h1>
+    <p class="subtitle">Ideas, projects and work notes</p>
+</header>
+
+<main class="content-area">
+    <div class="blog-toolbar">
+        <div class="glass-box blog-search-box">
+            <label for="blog-search">Search by keywords</label>
+            <input id="blog-search" type="search" placeholder="Ex.: productivity, workflow, planning">
+            <p id="blog-search-feedback" class="blog-search-feedback"></p>
+        </div>
+    </div>
+
+    <div class="blog-layout">
+        <aside class="glass-box blog-sidebar">
+            <h2>Index by date</h2>
+            <div id="blog-index"></div>
+        </aside>
+
+        <section class="blog-main">
+            <div id="blog-posts"></div>
+        </section>
+    </div>
+</main>
+
+<script>
+window.SITE_POSTS = [
+
+  {
+    title: "Exemplo de post",
+    url: "/site-pessoal/2026/05/30/exemplo-post/",
+    date: "2026-05-30",
+    summary: "Este é um post de exemplo criado para demonstrar como funcionam os posts no Jekyll.",
+    tags: []
+  }
+
+];
+</script>
+
+
+
+
+
+
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; Thiago Orbite Barreto - 2026</p>
+    <nav class="social-links" aria-label="Social media links">
+      <a class="social-link" href="https://www.facebook.com/thiago.orbite.barreto.2025/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook">
+        <img class="social-icon" src="/site-pessoal/assets/icons/facebook.svg" alt="Facebook">
+      </a>
+      <a class="social-link" href="https://www.instagram.com/thiagoorbitebarreto/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram">
+        <img class="social-icon" src="/site-pessoal/assets/icons/instagram.svg" alt="Instagram">
+      </a>
+      <a class="social-link" href="https://www.threads.com/@thiagoorbitebarreto" target="_blank" rel="noopener noreferrer" aria-label="Threads" title="Threads">
+        <img class="social-icon" src="/site-pessoal/assets/icons/threads.svg" alt="Threads">
+      </a>
+      <a class="social-link" href="https://x.com/thiago_orbite_" target="_blank" rel="noopener noreferrer" aria-label="X" title="X">
+        <img class="social-icon" src="/site-pessoal/assets/icons/x.svg" alt="X">
+      </a>
+      <a class="social-link" href="https://www.linkedin.com/in/thiagoorbitebarreto/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn">
+        <img class="social-icon" src="/site-pessoal/assets/icons/linkedin.svg" alt="LinkedIn">
+      </a>
+    </nav>
+  </footer>
+
+  <script src="/site-pessoal/script.js"></script>
+</body>
+</html>
