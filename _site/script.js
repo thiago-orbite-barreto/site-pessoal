@@ -79,25 +79,50 @@ document.addEventListener("DOMContentLoaded", () => {
     if (langBtn) {
         langBtn.addEventListener("click", () => {
             const path = window.location.pathname;
-            let newPath;
-            if (isPathEnglish(path)) {
-                // remove the first '/en' segment
-                newPath = path.replace(/\/en\//, '/');
-            } else {
-                // add '/en' after base (handle trailing slash)
-                if (path.endsWith('/')) {
-                    newPath = path + 'en/';
-                } else {
-                    newPath = path + '/en/';
-                }
-            }
-            // preserve search and hash
             const search = window.location.search || '';
             const hash = window.location.hash || '';
-            window.location.pathname = newPath;
-            // append search/hash
-            window.location.search = search;
-            window.location.hash = hash;
+
+            const segments = path.split('/').filter(Boolean);
+
+            // If there's an 'en' segment anywhere, remove the first occurrence
+            const enIndex = segments.indexOf('en');
+            if (enIndex !== -1) {
+                segments.splice(enIndex, 1);
+                const newPath = '/' + segments.join('/') + (path.endsWith('/') ? '/' : '/');
+                window.location.href = newPath + search + hash;
+                return;
+            }
+
+            // Map common Portuguese pages to their English counterparts
+            const last = segments[segments.length - 1] || '';
+            const base = segments[0] || '';
+
+            let newSegments = segments.slice();
+
+            if (last === '' || /^index(\.html)?$/.test(last) || segments.length === 1) {
+                // root/home page -> /<base>/en/
+                if (base) {
+                    newSegments = [base, 'en'];
+                } else {
+                    newSegments = ['en'];
+                }
+            } else if (/^blog(\/|$)|blog\.html$/.test(last) || last === 'blog') {
+                newSegments = base ? [base, 'en', 'blog'] : ['en', 'blog'];
+            } else if (/^curriculo(\.html)?$/.test(last) || /curriculo/.test(last)) {
+                newSegments = base ? [base, 'en', 'resume'] : ['en', 'resume'];
+            } else if (/^contato(\.html)?$/.test(last) || /contato/.test(last)) {
+                newSegments = base ? [base, 'en', 'contact'] : ['en', 'contact'];
+            } else {
+                // Fallback: insert 'en' after the first segment (preserve baseurl when present)
+                if (segments.length >= 1) {
+                    newSegments.splice(1, 0, 'en');
+                } else {
+                    newSegments.splice(0, 0, 'en');
+                }
+            }
+
+            const newPath = '/' + newSegments.join('/') + (path.endsWith('/') ? '/' : '/');
+            window.location.href = newPath + search + hash;
         });
     }
 
@@ -253,12 +278,7 @@ function slugify(text) {
 function getCurrentPageName() {
     const pathSegments = window.location.pathname.split("/").filter(Boolean);
     const currentPath = pathSegments[pathSegments.length - 1] || "";
-
-    if (currentPath.endsWith(".html")) {
-        return currentPath;
-    }
-
-    return document.documentElement.lang === "en" ? "index_en.html" : "index.html";
+    return currentPath;
 }
 
 function initNavMenu() {
