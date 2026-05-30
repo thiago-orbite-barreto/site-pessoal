@@ -59,24 +59,14 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    const pageMap = {
-        "index.html": "index_en.html",
-        "index_en.html": "index.html",
-        "curriculo.html": "curriculo_en.html",
-        "curriculo_en.html": "curriculo.html",
-        "blog.html": "blog_en.html",
-        "blog_en.html": "blog.html",
-        "contato.html": "contact_en.html",
-        "contact_en.html": "contato.html"
-    };
+    function isPathEnglish(pathname) {
+        return pathname.split('/').includes('en');
+    }
 
     function updateLangIcon() {
-        if (!langBtn) {
-            return;
-        }
-
+        if (!langBtn) return;
         const path = window.location.pathname;
-        const isEnglish = path.includes("_en") || path.includes("contact_en");
+        const isEnglish = isPathEnglish(path);
         if (langIcon) {
             langIcon.src = (siteBase || '') + "/assets/icons/" + (isEnglish ? "flag-us.svg" : "flag-br.svg");
             langIcon.alt = isEnglish ? "English" : "Português";
@@ -88,12 +78,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (langBtn) {
         langBtn.addEventListener("click", () => {
-            const currentPage = getCurrentPageName();
-            const targetPage = pageMap[currentPage];
-
-            if (targetPage) {
-                window.location.href = targetPage;
+            const path = window.location.pathname;
+            let newPath;
+            if (isPathEnglish(path)) {
+                // remove the first '/en' segment
+                newPath = path.replace(/\/en\//, '/');
+            } else {
+                // add '/en' after base (handle trailing slash)
+                if (path.endsWith('/')) {
+                    newPath = path + 'en/';
+                } else {
+                    newPath = path + '/en/';
+                }
             }
+            // preserve search and hash
+            const search = window.location.search || '';
+            const hash = window.location.hash || '';
+            window.location.pathname = newPath;
+            // append search/hash
+            window.location.search = search;
+            window.location.hash = hash;
         });
     }
 
@@ -189,7 +193,7 @@ function renderBlog(postsContainer, indexContainer, feedback, posts, query, isEn
         article.id = post.id;
         article.innerHTML = `
             <p class="post-date">${formatDate(post.date, isEnglish)}</p>
-            <h3>${post.title}</h3>
+            <h3><a href="${post.url}">${post.title}</a></h3>
             <p>${post.summary}</p>
             <p class="post-tags">${post.tags.map((tag) => `<span>${tag}</span>`).join("")}</p>
         `;
