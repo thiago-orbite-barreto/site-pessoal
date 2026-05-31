@@ -88,7 +88,34 @@ document.addEventListener("DOMContentLoaded", () => {
             const enIndex = segments.indexOf('en');
             if (enIndex !== -1) {
                 segments.splice(enIndex, 1);
-                const newPath = '/' + segments.join('/') + (path.endsWith('/') ? '/' : '/');
+
+                // If removing 'en' yields no segments, go to site root
+                if (segments.length === 0) {
+                    window.location.href = '/' + search + hash;
+                    return;
+                }
+
+                // Map common English slugs back to Portuguese filenames/paths
+                const first = segments[0];
+                if (first === 'contact') {
+                    // /en/contact/ -> /contato.html (preserve deeper path if present, ignore index.html)
+                    const tailParts = segments.slice(1).filter((s) => s && s !== 'index.html');
+                    const suffix = tailParts.length > 0 ? tailParts.join('/') + '/' : '';
+                    window.location.href = '/' + suffix + 'contato.html' + search + hash;
+                    return;
+                }
+
+                if (first === 'resume') {
+                    // /en/resume/ -> /curriculo.html (ignore index.html)
+                    const tailParts = segments.slice(1).filter((s) => s && s !== 'index.html');
+                    const suffix = tailParts.length > 0 ? tailParts.join('/') + '/' : '';
+                    window.location.href = '/' + suffix + 'curriculo.html' + search + hash;
+                    return;
+                }
+
+                // Default: preserve segments, add trailing slash only for directory-like paths
+                const joined = segments.join('/');
+                const newPath = '/' + joined + (joined.endsWith('.html') ? '' : '/');
                 window.location.href = newPath + search + hash;
                 return;
             }
