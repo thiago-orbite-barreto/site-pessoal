@@ -3,10 +3,10 @@ layout: post
 title: "O Autor como Curador: A IA e a Nova Fronteira da Autoria"
 lang: pt
 ref: author-curator-2026-05-30
+permalink: /2026/05/30/o-autor-como-curador-a-ia-e-a-nova-fronteira-da-autoria/
 date: 2026-05-30 23:00:00 -0300
 categories: blog
 ---
-# O Autor como Curador: A IA e a Nova Fronteira da Autoria
 
 A rápida integração de Modelos de Linguagem Grande (LLMs) na escrita contemporânea gerou um impasse normativo: deve-se, obrigatoriamente, declarar a participação da máquina? Embora instituições acadêmicas e editoriais busquem regulamentações rígidas, a natureza do trabalho intelectual sugere que a obrigatoriedade da declaração é dispensável quando a IA atua como suporte à intencionalidade humana, pois o valor final da obra reside na curadoria e no acabamento dados pelo autor.
 
