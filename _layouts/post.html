@@ -26,9 +26,35 @@ layout: default
         <footer class="post-footer">
           <h3>{% if page.lang == 'en' %}Other posts{% else %}Outros posts{% endif %}</h3>
           <ul class="related-posts">
-            {% for post in site.posts limit:5 %}
+            {% if page.lang == 'en' %}
+              {% assign page_is_en = true %}
+            {% else %}
+              {% assign page_is_en = page.url contains '/en/' %}
+            {% endif %}
+            {% assign related_count = 0 %}
+            {% for post in site.posts %}
               {% if post.url != page.url %}
-                <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
+                {% if post.lang == 'en' %}
+                  {% assign post_is_en = true %}
+                {% else %}
+                  {% assign post_is_en = post.url contains '/en/' %}
+                {% endif %}
+
+                {% if page_is_en %}
+                  {% if post_is_en %}
+                    {% if related_count < 5 %}
+                      <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
+                      {% assign related_count = related_count | plus: 1 %}
+                    {% endif %}
+                  {% endif %}
+                {% else %}
+                  {% unless post_is_en %}
+                    {% if related_count < 5 %}
+                      <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
+                      {% assign related_count = related_count | plus: 1 %}
+                    {% endif %}
+                  {% endunless %}
+                {% endif %}
               {% endif %}
             {% endfor %}
           </ul>

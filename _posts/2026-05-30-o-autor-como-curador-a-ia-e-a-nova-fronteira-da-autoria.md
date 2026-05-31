@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "O Autor como Curador: A IA e a Nova Fronteira da Autoria"
+lang: pt
 date: 2026-05-30 23:00:00 -0300
 categories: blog
 ---
