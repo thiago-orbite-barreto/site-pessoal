@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "O Autor como Curador: A IA e a Nova Fronteira da Autoria"
+title: "The Author as Curator: AI and the New Frontier of Authorship"
 lang: en
 ref: author-curator-2026-05-30
 date: 2026-05-30 23:00:00 -0300
