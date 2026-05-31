@@ -20,7 +20,7 @@ A IA moderna desempenha o papel desses ajudantes: ela executa a base material, p
 
 ## A Fronteira entre o Particular e o Público
 
-O uso da IA permite que o autor retome espaços de experimentação privada antes de levar a obra ao público. Criticar um texto por "falta de humanidade" é um exercício legítimo da crítica literária ou estética, mas não um crime ético de ocultação. Se um texto carece de alma, a falha não é da ferramenta, mas do manuseio da técnica pelo artista. Assim como uma fotografia não é menos arte por utilizar um sensor digital em vez de um pincel, um texto não perde sua autoria por utilizar um algoritmo de processamento de linguagem.
+O uso da IA permite que o autor retome espaços de experimentação privada antes de levar a obra ao público. Criticar um texto por "falta de humanidade" é um exercício legítimo da crítica literária ou estética, mas não um crime ético de ocultação. Se um texto carece de alma, a falha não é da ferramenta, mas do manuseio da técnica pelo artista. Assim como uma fotografia não é menos arte por utilizar um sensor digital em vez de um filme, um texto não perde sua autoria por utilizar um algoritmo de processamento de linguagem.
 
 ## A Transparência Metodológica e a Ilusão da Decisão Automatizada
 
