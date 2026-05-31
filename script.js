@@ -594,12 +594,15 @@ function initContactForm() {
                 });
             })
             .catch((error) => {
-                const message = error && error.message ? error.message : "Unable to send your message. Please try again.";
+                const message = getSubmissionErrorMessage(error);
                 setAlert("error", message);
                 if (error && error.errors) {
                     Object.keys(error.errors).forEach((key) => {
-                        if (fieldMap[key] && fieldMap[key].input) {
-                            setFieldState(fieldMap[key].input, false, error.errors[key]);
+                        const fieldError = error.errors[key];
+                        const fieldName = fieldError && fieldError.field ? fieldError.field : key;
+                        const fieldMessage = fieldError && fieldError.message ? fieldError.message : fieldError;
+                        if (fieldMap[fieldName] && fieldMap[fieldName].input) {
+                            setFieldState(fieldMap[fieldName].input, false, fieldMessage);
                         }
                     });
                 }
@@ -714,15 +717,26 @@ function initContactForm() {
     });
 
     function ensureRecaptchaHidden(value) {
-        let hidden = document.getElementById('recaptcha-token');
+        let hidden = document.getElementById("recaptcha-token");
         if (!hidden) {
-            hidden = document.createElement('input');
-            hidden.type = 'hidden';
-            hidden.name = 'recaptcha_token';
-            hidden.id = 'recaptcha-token';
+            hidden = document.createElement("input");
+            hidden.type = "hidden";
+            hidden.name = "recaptcha_token";
+            hidden.id = "recaptcha-token";
             form.appendChild(hidden);
         }
         hidden.value = value;
+
+        let responseInput = form.querySelector('[name="g-recaptcha-response"]')
+            || document.querySelector('[name="g-recaptcha-response"]');
+        if (!responseInput) {
+            responseInput = document.createElement("input");
+            responseInput.type = "hidden";
+            responseInput.name = "g-recaptcha-response";
+            responseInput.id = "g-recaptcha-response";
+            form.appendChild(responseInput);
+        }
+        responseInput.value = value;
     }
 
     function getRecaptchaV2Token() {
@@ -736,5 +750,34 @@ function initContactForm() {
         const responseInput = form.querySelector('[name="g-recaptcha-response"]')
             || document.querySelector('[name="g-recaptcha-response"]');
         return responseInput ? responseInput.value : "";
+    }
+
+    function getSubmissionErrorMessage(error) {
+        if (error && error.message) {
+            return error.message;
+        }
+
+        if (error && Array.isArray(error.errors)) {
+            const messages = error.errors
+                .map((item) => item && item.message ? item.message : "")
+                .filter(Boolean);
+            if (messages.length > 0) {
+                return messages.join(" ");
+            }
+        }
+
+        if (error && error.errors && typeof error.errors === "object") {
+            const messages = Object.keys(error.errors)
+                .map((key) => {
+                    const item = error.errors[key];
+                    return item && item.message ? item.message : item;
+                })
+                .filter(Boolean);
+            if (messages.length > 0) {
+                return messages.join(" ");
+            }
+        }
+
+        return "Unable to send your message. Please try again.";
     }
 }
