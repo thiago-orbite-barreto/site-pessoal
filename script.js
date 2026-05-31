@@ -96,20 +96,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 // Map common English slugs back to Portuguese filenames/paths
-                const first = segments[0];
-                if (first === 'contact') {
-                    // /en/contact/ -> /contato.html (preserve deeper path if present, ignore index.html)
-                    const tailParts = segments.slice(1).filter((s) => s && s !== 'index.html');
-                    const suffix = tailParts.length > 0 ? tailParts.join('/') + '/' : '';
-                    window.location.href = '/' + suffix + 'contato.html' + search + hash;
+                const contactIdx = segments.indexOf('contact');
+                const resumeIdx = segments.indexOf('resume');
+
+                if (contactIdx !== -1) {
+                    const prefixParts = segments.slice(0, contactIdx).filter((s) => s && s !== 'index.html');
+                    const prefix = prefixParts.length > 0 ? '/' + prefixParts.join('/') : '';
+                    window.location.href = prefix + '/contato.html' + search + hash;
                     return;
                 }
 
-                if (first === 'resume') {
-                    // /en/resume/ -> /curriculo.html (ignore index.html)
-                    const tailParts = segments.slice(1).filter((s) => s && s !== 'index.html');
-                    const suffix = tailParts.length > 0 ? tailParts.join('/') + '/' : '';
-                    window.location.href = '/' + suffix + 'curriculo.html' + search + hash;
+                if (resumeIdx !== -1) {
+                    const prefixParts = segments.slice(0, resumeIdx).filter((s) => s && s !== 'index.html');
+                    const prefix = prefixParts.length > 0 ? '/' + prefixParts.join('/') : '';
+                    window.location.href = prefix + '/curriculo.html' + search + hash;
                     return;
                 }
 
