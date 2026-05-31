@@ -7,7 +7,6 @@ permalink: /en/2026/05/30/the-author-as-curator-ai-and-the-new-frontier-of-autho
 date: 2026-05-30 23:00:00 -0300
 categories: blog
 ---
-# The Author as Curator: AI and the New Frontier of Authorship
 
 The rapid integration of Large Language Models (LLMs) into contemporary writing has sparked a normative impasse: must one obligatorily declare the machine's participation? Although academic and editorial institutions seek rigid regulations, the nature of intellectual labor suggests that mandatory disclosure is dispensable when AI serves as a support for human intentionality, as the ultimate value of the work lies in the curation and refinement provided by the author.
 
