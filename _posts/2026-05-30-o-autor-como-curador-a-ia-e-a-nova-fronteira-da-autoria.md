@@ -4,6 +4,7 @@ title: "O Autor como Curador: A IA e a Nova Fronteira da Autoria"
 lang: pt
 ref: author-curator-2026-05-30
 permalink: /2026/05/30/o-autor-como-curador-a-ia-e-a-nova-fronteira-da-autoria/
+author: Thiago Orbite Barreto
 date: 2026-05-30 23:00:00 -0300
 categories: blog
 ---

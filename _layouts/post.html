@@ -19,7 +19,10 @@ layout: default
           {% unless content contains '<h1' %}
             <h1>{{ page.title }}</h1>
           {% endunless %}
-          <p class="post-meta">{{ page.date | date: "%d %B %Y" }}</p>
+          <p class="post-meta" data-date="{{ page.date | date: "%Y-%m-%d" }}">{{ page.date | date: "%d %B %Y" }}</p>
+          {% if page.author %}
+            <p class="post-author">{{ page.author }}</p>
+          {% endif %}
         </header>
         <section class="post-content">
           {{ content }}
@@ -31,17 +34,27 @@ layout: default
             {% if page.lang == 'en' %}
               {% assign page_is_en = true %}
             {% else %}
-              {% assign page_is_en = page.url contains '/en/' %}
+              {% if page.url contains '/en/' %}
+                {% assign page_is_en = true %}
+              {% else %}
+                {% assign page_is_en = false %}
+              {% endif %}
             {% endif %}
             {% assign related_count = 0 %}
             {% for post in site.posts %}
-              {% if post.url | relative_url != page.url | relative_url %}
+              {% assign post_rel = post.url | relative_url %}
+              {% assign page_rel = page.url | relative_url %}
+              {% if post_rel != page_rel %}
                 {% unless post.ref and page.ref and post.ref == page.ref %}
-                {% if post.lang == 'en' %}
-                  {% assign post_is_en = true %}
-                {% else %}
-                  {% assign post_is_en = post.url contains '/en/' %}
-                {% endif %}
+                  {% if post.lang == 'en' %}
+                    {% assign post_is_en = true %}
+                  {% else %}
+                    {% if post.url contains '/en/' %}
+                      {% assign post_is_en = true %}
+                    {% else %}
+                      {% assign post_is_en = false %}
+                    {% endif %}
+                  {% endif %}
 
                 {% if page_is_en %}
                   {% if post_is_en %}

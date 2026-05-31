@@ -9,13 +9,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const themeIcon = themeBtn ? themeBtn.querySelector("img") : null;
     const langIcon = langBtn ? langBtn.querySelector("img") : null;
 
-    // Derive site base from stylesheet href so icon paths work with `baseurl`
-    const stylesheetNode = document.querySelector('link[rel="stylesheet"]');
-    let siteBase = "";
+    // Determine site base: prefer explicit `window.SITE_BASE` set in templates,
+    // otherwise derive from stylesheet href as a fallback.
+    let siteBase = '';
     try {
-        if (stylesheetNode && stylesheetNode.href) {
-            // Remove /assets/css/... to get site base (may be absolute URL)
-            siteBase = stylesheetNode.href.replace(/\/assets\/css\/.*$/, '');
+        if (typeof window !== 'undefined' && window.SITE_BASE) {
+            siteBase = window.SITE_BASE.replace(/\/$/, '');
+        } else {
+            const stylesheetNode = document.querySelector('link[rel="stylesheet"]');
+            if (stylesheetNode && stylesheetNode.href) {
+                siteBase = stylesheetNode.href.replace(/\/assets\/css\/.*$/, '');
+            }
         }
     } catch (e) {
         siteBase = '';
@@ -163,7 +167,16 @@ document.addEventListener("DOMContentLoaded", () => {
     updateFooterYearRange();
     initBlogPage();
     initContactForm();
+    formatPostDateOnPage();
 });
+
+function formatPostDateOnPage() {
+    const pm = document.querySelector('.post-meta[data-date]');
+    if (!pm) return;
+    const dateText = pm.dataset.date;
+    const isEnglish = document.documentElement.lang === 'en';
+    pm.textContent = formatDate(dateText, isEnglish);
+}
 
 function updateFooterYearRange() {
     const yearNodes = document.querySelectorAll(".footer-year-range[data-start-year]");
