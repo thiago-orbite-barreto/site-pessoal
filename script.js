@@ -408,11 +408,6 @@ function initContactForm() {
     const recaptchaKey = (form.dataset.recaptchaSiteKey || "").trim();
     const recaptchaVersion = (form.dataset.recaptchaVersion || "").trim().toLowerCase();
     const recaptchaInput = document.getElementById("recaptcha-token");
-    // g-recaptcha-response may be a textarea injected by v2 widget; accept any element name match
-    let recaptchaResponseInput = form.querySelector('[name="g-recaptcha-response"]');
-    if (!recaptchaResponseInput) {
-        recaptchaResponseInput = document.querySelector('[name="g-recaptcha-response"]');
-    }
     let isSubmitting = false;
 
     form.setAttribute("method", "POST");
@@ -649,7 +644,7 @@ function initContactForm() {
 
     const runRecaptcha = () => {
         if (recaptchaVersion === "v2") {
-            const token = recaptchaResponseInput ? recaptchaResponseInput.value : "";
+            const token = getRecaptchaV2Token();
             if (!token) {
                 setAlert("error", "Please complete the reCAPTCHA.");
                 isSubmitting = false;
@@ -728,5 +723,18 @@ function initContactForm() {
             form.appendChild(hidden);
         }
         hidden.value = value;
+    }
+
+    function getRecaptchaV2Token() {
+        if (window.grecaptcha && typeof window.grecaptcha.getResponse === "function") {
+            const token = window.grecaptcha.getResponse();
+            if (token) {
+                return token;
+            }
+        }
+
+        const responseInput = form.querySelector('[name="g-recaptcha-response"]')
+            || document.querySelector('[name="g-recaptcha-response"]');
+        return responseInput ? responseInput.value : "";
     }
 }
