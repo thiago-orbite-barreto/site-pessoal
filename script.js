@@ -82,6 +82,13 @@ document.addEventListener("DOMContentLoaded", () => {
             const search = window.location.search || '';
             const hash = window.location.hash || '';
 
+            // If this page exposes an explicit translation URL (per-post), use it.
+            const translationUrl = document.body.dataset.translationUrl || (document.querySelector('meta[name="translation"]') ? document.querySelector('meta[name="translation"]').content : null);
+            if (translationUrl) {
+                window.location.href = translationUrl + search + hash;
+                return;
+            }
+
             const segments = path.split('/').filter(Boolean);
 
             // If there's an 'en' segment anywhere, remove the first occurrence
