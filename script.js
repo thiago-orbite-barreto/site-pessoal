@@ -554,6 +554,17 @@ function initContactForm() {
 
     const sendForm = () => {
         const formData = new FormData(form);
+        const recaptchaToken = getStoredRecaptchaToken();
+        if (recaptchaToken) {
+            formData.set("g-recaptcha-response", recaptchaToken);
+            formData.set("recaptcha_token", recaptchaToken);
+        }
+        const body = new URLSearchParams();
+        formData.forEach((value, key) => {
+            if (typeof value === "string") {
+                body.append(key, value);
+            }
+        });
         setLoading(true);
 
         const actionUrl = form.action;
@@ -561,17 +572,20 @@ function initContactForm() {
 
         fetch(actionUrl, {
             method: method,
-            body: formData,
+            body: body,
             headers: {
-                "Accept": "application/json"
+                "Accept": "application/json",
+                "Content-Type": "application/x-www-form-urlencoded"
             }
         })
             .then(async (response) => {
                 const contentType = response.headers.get("content-type") || "";
                 const isJson = contentType.includes("application/json");
-                const data = isJson ? await response.json().catch(() => ({})) : {};
+                const data = isJson
+                    ? await response.json().catch(() => ({}))
+                    : { message: await response.text().catch(() => "") };
                 if (!response.ok) {
-                    throw data;
+                    throw Object.assign(data, { status: response.status });
                 }
                 if (isJson && data.ok === false) {
                     throw data;
@@ -727,8 +741,7 @@ function initContactForm() {
         }
         hidden.value = value;
 
-        let responseInput = form.querySelector('[name="g-recaptcha-response"]')
-            || document.querySelector('[name="g-recaptcha-response"]');
+        let responseInput = form.querySelector('[name="g-recaptcha-response"]');
         if (!responseInput) {
             responseInput = document.createElement("input");
             responseInput.type = "hidden";
@@ -737,6 +750,11 @@ function initContactForm() {
             form.appendChild(responseInput);
         }
         responseInput.value = value;
+
+        const externalResponseInput = document.querySelector('[name="g-recaptcha-response"]');
+        if (externalResponseInput && externalResponseInput !== responseInput) {
+            externalResponseInput.value = value;
+        }
     }
 
     function getRecaptchaV2Token() {
@@ -752,9 +770,24 @@ function initContactForm() {
         return responseInput ? responseInput.value : "";
     }
 
+    function getStoredRecaptchaToken() {
+        const responseInput = form.querySelector('[name="g-recaptcha-response"]')
+            || document.querySelector('[name="g-recaptcha-response"]');
+        if (responseInput && responseInput.value) {
+            return responseInput.value;
+        }
+
+        const hidden = document.getElementById("recaptcha-token");
+        return hidden ? hidden.value : "";
+    }
+
     function getSubmissionErrorMessage(error) {
-        if (error && error.message) {
+        if (error && error.message && error.message.trim()) {
             return error.message;
+        }
+
+        if (error && error.error && String(error.error).trim()) {
+            return String(error.error);
         }
 
         if (error && Array.isArray(error.errors)) {
@@ -776,6 +809,10 @@ function initContactForm() {
             if (messages.length > 0) {
                 return messages.join(" ");
             }
+        }
+
+        if (error && error.status) {
+            return `Unable to send your message. Formspree returned HTTP ${error.status}.`;
         }
 
         return "Unable to send your message. Please try again.";
