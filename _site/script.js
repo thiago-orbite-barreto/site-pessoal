@@ -408,7 +408,11 @@ function initContactForm() {
     const recaptchaKey = (form.dataset.recaptchaSiteKey || "").trim();
     const recaptchaVersion = (form.dataset.recaptchaVersion || "").trim().toLowerCase();
     const recaptchaInput = document.getElementById("recaptcha-token");
-    const recaptchaResponseInput = form.querySelector('input[name="g-recaptcha-response"]');
+    // g-recaptcha-response may be a textarea injected by v2 widget; accept any element name match
+    let recaptchaResponseInput = form.querySelector('[name="g-recaptcha-response"]');
+    if (!recaptchaResponseInput) {
+        recaptchaResponseInput = document.querySelector('[name="g-recaptcha-response"]');
+    }
     let isSubmitting = false;
 
     form.setAttribute("method", "POST");
@@ -652,6 +656,8 @@ function initContactForm() {
                 setLoading(false);
                 return;
             }
+            // Ensure backend receives token under `recaptcha_token`
+            ensureRecaptchaHidden(token);
             sendForm();
             return;
         }
@@ -671,7 +677,8 @@ function initContactForm() {
                 window.grecaptcha.ready(() => {
                     window.grecaptcha.execute(recaptchaKey, { action: "contact" })
                         .then((token) => {
-                            recaptchaInput.value = token || "";
+                            // ensure hidden input exists and set token
+                            ensureRecaptchaHidden(token || "");
                             sendForm();
                         })
                         .catch(() => {
@@ -710,4 +717,16 @@ function initContactForm() {
         isSubmitting = true;
         runRecaptcha();
     });
+
+    function ensureRecaptchaHidden(value) {
+        let hidden = document.getElementById('recaptcha-token');
+        if (!hidden) {
+            hidden = document.createElement('input');
+            hidden.type = 'hidden';
+            hidden.name = 'recaptcha_token';
+            hidden.id = 'recaptcha-token';
+            form.appendChild(hidden);
+        }
+        hidden.value = value;
+    }
 }
