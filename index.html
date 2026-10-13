@@ -4,14 +4,52 @@ title: "Home"
 permalink: /
 ---
 
-<header class="main-header">
-    <h1 class="ff-title">THIAGO ORBITE BARRETO</h1>
-    <p class="subtitle">Desenvolvedor | Analista | Comunicador</p>
-</header>
+<div class="home-hero">
+    <header class="main-header">
+        <p class="home-eyebrow">PENSAMENTO &middot; TECNOLOGIA &middot; COMUNICA&Ccedil;&Atilde;O</p>
+        <h1 class="ff-title">THIAGO ORBITE BARRETO</h1>
+        <p class="subtitle">Desenvolvedor <span aria-hidden="true">&middot;</span> Analista <span aria-hidden="true">&middot;</span> Comunicador</p>
+    </header>
 
-<section class="glass-box">
-    <h2>Bem-vindo</h2>
-    <p>Este &eacute; meu espa&ccedil;o profissional para ideias, projetos e reflex&otilde;es.</p>
+    <section class="home-welcome">
+        <p class="home-section-label">UM ESPA&Ccedil;O PARA IDEIAS</p>
+        <h2>Bem-vindo.</h2>
+        <p>Este &eacute; meu espa&ccedil;o profissional para ideias, projetos e reflex&otilde;es.</p>
+    </section>
+
+    <a class="home-scroll-cue" href="#latest-writing">
+        <span>Continue a leitura</span>
+        <span class="home-scroll-cue__line" aria-hidden="true"></span>
+    </a>
+</div>
+
+<section class="home-blog" id="latest-writing" aria-labelledby="home-blog-title">
+    <div class="home-blog__inner">
+        <header class="home-blog__heading">
+            <p class="home-section-label">CADERNO DE IDEIAS</p>
+            <h2 id="home-blog-title">Leituras recentes</h2>
+            <p>Reflex&otilde;es sobre autoria, tecnologia e o mundo em transforma&ccedil;&atilde;o.</p>
+        </header>
+
+        <div class="home-post-grid">
+            {% assign posts_pt = site.posts | where_exp: "post", "post.lang != 'en'" %}
+            {% for post in posts_pt limit: 3 %}
+                <article class="home-post-card">
+                    <a class="home-post-card__image" href="{{ post.url | relative_url }}" aria-label="Ler: {{ post.title }}">
+                        <img src="{{ post.cover | default: '/assets/images/editorial-cover.svg' | relative_url }}" alt="" loading="lazy" decoding="async">
+                    </a>
+                    <div class="home-post-card__body">
+                        <time class="post-date home-post-date" datetime="{{ post.date | date: "%Y-%m-%d" }}" data-date="{{ post.date | date: "%Y-%m-%d" }}">{{ post.date | date: "%Y-%m-%d" }}</time>
+                        <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+                        <p>{{ post.excerpt | strip_html | strip_newlines | truncate: 180 }}</p>
+                        <a class="home-post-card__more" href="{{ post.url | relative_url }}">Ler artigo <span aria-hidden="true">&rarr;</span></a>
+                    </div>
+                </article>
+            {% else %}
+                <p class="home-post-empty">Novos textos em breve.</p>
+            {% endfor %}
+        </div>
+
+        <a class="home-blog__all" href="{{ '/blog/' | relative_url }}">Explorar o blog <span aria-hidden="true">&rarr;</span></a>
+    </div>
 </section>
-
-

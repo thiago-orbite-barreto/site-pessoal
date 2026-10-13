@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     initNavMenu();
     initScrollTopButton();
+    initScrollReveal();
 
     const themeIcon = themeBtn ? themeBtn.querySelector("img") : null;
     const langIcon = langBtn ? langBtn.querySelector("img") : null;
@@ -171,11 +172,12 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function formatPostDateOnPage() {
-    const pm = document.querySelector('.post-meta[data-date]');
-    if (!pm) return;
-    const dateText = pm.dataset.date;
+    const dateNodes = document.querySelectorAll('.post-meta[data-date], .home-post-date[data-date]');
+    if (!dateNodes.length) return;
     const isEnglish = document.documentElement.lang === 'en';
-    pm.textContent = formatDate(dateText, isEnglish);
+    dateNodes.forEach((node) => {
+        node.textContent = formatDate(node.dataset.date, isEnglish);
+    });
 }
 
 function updateFooterYearRange() {
@@ -264,6 +266,9 @@ function renderBlog(postsContainer, indexContainer, feedback, posts, query, isEn
         article.className = "glass-box post-card";
         article.id = post.id;
         article.innerHTML = `
+            <a class="post-card__image" href="${post.url}" aria-label="${isEnglish ? "Read: " : "Ler: "}${post.title}">
+                <img src="${post.cover}" alt="" loading="lazy" decoding="async">
+            </a>
             <p class="post-date">${formatDate(post.date, isEnglish)}</p>
             <h3><a href="${post.url}">${post.title}</a></h3>
             <p>${post.summary}</p>
@@ -295,6 +300,25 @@ function renderBlog(postsContainer, indexContainer, feedback, posts, query, isEn
         const queryText = query ? ` - "${query}"` : "";
         feedback.textContent = `${posts.length} ${label}${queryText}`;
     }
+}
+
+function initScrollReveal() {
+    const revealItems = document.querySelectorAll(".home-blog__heading, .home-post-card");
+    if (!revealItems.length || typeof IntersectionObserver === "undefined") {
+        return;
+    }
+
+    revealItems.forEach((item) => item.classList.add("reveal-on-scroll"));
+    const observer = new IntersectionObserver((entries, activeObserver) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("is-revealed");
+                activeObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.12 });
+
+    revealItems.forEach((item) => observer.observe(item));
 }
 
 function formatDate(dateText, isEnglish) {

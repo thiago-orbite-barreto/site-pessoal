@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Curation, ideas, and technology</title>
+  <desc id="desc">An abstract editorial composition in warm paper, ink, and terracotta tones.</desc>
+  <rect width="1200" height="720" fill="#e9e2d5"/>
+  <path d="M0 570C250 470 395 650 650 530s360-95 550-210v400H0Z" fill="#d6c7b1"/>
+  <circle cx="800" cy="300" r="184" fill="#9c5141"/>
+  <circle cx="800" cy="300" r="136" fill="none" stroke="#f4f0e8" stroke-width="1.5" opacity=".78"/>
+  <path d="M181 173h316M181 194h218M181 215h270" stroke="#332d27" stroke-width="2" opacity=".55"/>
+  <path d="M384 460h255M384 480h178" stroke="#332d27" stroke-width="2" opacity=".45"/>
+  <path d="M800 116v368M616 300h368" stroke="#f4f0e8" stroke-width="1" opacity=".42"/>
+  <circle cx="800" cy="300" r="8" fill="#f4f0e8"/>
+  <rect x="1030" y="98" width="1" height="154" fill="#332d27" opacity=".4"/>
+  <rect x="1080" y="98" width="1" height="94" fill="#332d27" opacity=".4"/>
+</svg>

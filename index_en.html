@@ -5,17 +5,54 @@ lang: en
 permalink: /en/
 ---
 
-<header class="main-header">
-    <h1 class="ff-title">THIAGO ORBITE BARRETO</h1>
-    <p class="subtitle">Developer | Analyst | Communicator</p>
-</header>
+<div class="home-hero">
+    <header class="main-header">
+        <p class="home-eyebrow">THOUGHT &middot; TECHNOLOGY &middot; COMMUNICATION</p>
+        <h1 class="ff-title">THIAGO ORBITE BARRETO</h1>
+        <p class="subtitle">Developer <span aria-hidden="true">&middot;</span> Analyst <span aria-hidden="true">&middot;</span> Communicator</p>
+    </header>
 
-<section class="glass-box">
-    <h2>Welcome</h2>
-    <p>This is my professional space for ideas and projects.</p>
+    <section class="home-welcome">
+        <p class="home-section-label">A SPACE FOR IDEAS</p>
+        <h2>Welcome.</h2>
+        <p>This is my professional space for ideas, projects, and reflections.</p>
+    </section>
+
+    <a class="home-scroll-cue" href="#latest-writing">
+        <span>Continue reading</span>
+        <span class="home-scroll-cue__line" aria-hidden="true"></span>
+    </a>
+</div>
+
+<section class="home-blog" id="latest-writing" aria-labelledby="home-blog-title">
+    <div class="home-blog__inner">
+        <header class="home-blog__heading">
+            <p class="home-section-label">NOTEBOOK</p>
+            <h2 id="home-blog-title">Recent writing</h2>
+            <p>Thoughts on authorship, technology, and a world in transformation.</p>
+        </header>
+
+        <div class="home-post-grid">
+            {% assign posts_en = site.posts | where: "lang", "en" %}
+            {% for post in posts_en limit: 3 %}
+                <article class="home-post-card">
+                    <a class="home-post-card__image" href="{{ post.url | relative_url }}" aria-label="Read: {{ post.title }}">
+                        <img src="{{ post.cover | default: '/assets/images/editorial-cover.svg' | relative_url }}" alt="" loading="lazy" decoding="async">
+                    </a>
+                    <div class="home-post-card__body">
+                        <time class="post-date home-post-date" datetime="{{ post.date | date: "%Y-%m-%d" }}" data-date="{{ post.date | date: "%Y-%m-%d" }}">{{ post.date | date: "%Y-%m-%d" }}</time>
+                        <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+                        <p>{{ post.excerpt | strip_html | strip_newlines | truncate: 180 }}</p>
+                        <a class="home-post-card__more" href="{{ post.url | relative_url }}">Read article <span aria-hidden="true">&rarr;</span></a>
+                    </div>
+                </article>
+            {% else %}
+                <p class="home-post-empty">New writing coming soon.</p>
+            {% endfor %}
+        </div>
+
+        <a class="home-blog__all" href="{{ '/en/blog/' | relative_url }}">Explore the blog <span aria-hidden="true">&rarr;</span></a>
+    </div>
 </section>
-
-
-
 
 
