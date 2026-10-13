@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const body = document.body;
     const themeBtn = document.getElementById("theme-toggle");
     const langBtn = document.getElementById("lang-toggle");
+    const monogram = document.querySelector(".nav-monogram");
+    const favicon = document.getElementById("site-favicon");
 
     initNavMenu();
     initScrollTopButton();
@@ -27,10 +29,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function updateThemeIcon() {
-        if (!themeBtn) {
-            return;
-        }
         const isDark = body.classList.contains("dark-mode");
+        const monogramPath = (siteBase || '') + `/assets/monogram${isDark ? "-white" : ""}.png`;
+        if (monogram) {
+            monogram.src = monogramPath;
+        }
+        if (favicon) {
+            favicon.href = monogramPath;
+        }
         if (themeIcon) {
             themeIcon.src = (siteBase || '') + "/assets/icons/" + (isDark ? "moon.svg" : "sun.svg");
             themeIcon.alt = isDark ? "Modo escuro" : "Modo claro";

@@ -11,7 +11,8 @@ Passos rápidos para deploy no GitHub Pages
 2. Confirme os arquivos estáticos
 
    - CSS: `assets/css/styles.css` (já movido)
-   - Ícones/imagens: `assets/icons/…` (já existe)
+   - Ícones: `assets/icons/…`
+   - Monograma e favicon: `assets/monogram.png`
 
 3. Branch e configuração do GitHub Pages
 
@@ -29,11 +30,17 @@ git push origin main
 
    - O Jekyll usa `{{ '/assets/css/styles.css' | relative_url }}` no layout. Não é necessário alterar links manuais se estiverem usando `relative_url`.
 
-5. Como escrever posts
+5. SEO e indexação
+
+   - O layout gera títulos, descrições, URLs canônicas, versões em outros idiomas, cartões sociais e dados estruturados a partir dos metadados de cada página.
+   - O `robots.txt` e o `sitemap.xml` ficam disponíveis em `/site-pessoal/robots.txt` e `/site-pessoal/sitemap.xml`.
+   - Para acompanhar a indexação, adicione o domínio do GitHub Pages ao Google Search Console e envie o sitemap publicado. O rastreamento e a exibição nos resultados dependem do Google e não são imediatos nem garantidos.
+
+6. Como escrever posts
 
    - Crie arquivos Markdown em `_posts/` com o formato `YYYY-MM-DD-titulo.md` e front matter YAML (ex.: `layout: post`, `title:`).
 
-6. Testar localmente (opcional)
+7. Testar localmente (opcional)
 
    - Instale Jekyll (requer Ruby):
 

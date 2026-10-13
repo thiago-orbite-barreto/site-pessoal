@@ -1,12 +1,14 @@
 ---
 layout: post
 title: "The Author as Curator: AI and the New Frontier of Authorship"
+description: "An essay on artificial intelligence, authorship, and human creativity, exploring curation and responsibility in AI-assisted writing."
 lang: en
 ref: author-curator-2026-05-30
 permalink: /en/2026/05/30/the-author-as-curator-ai-and-the-new-frontier-of-authorship/
 author: Thiago Orbite Barreto
 date: 2026-05-30 23:00:00 -0300
 categories: blog
+tags: [artificial intelligence, philosophy of technology, authorship, communication]
 cover: /assets/images/editorial-cover.svg
 ---
 

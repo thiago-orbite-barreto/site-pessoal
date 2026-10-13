@@ -1,0 +1,50 @@
+{% if page.layout == 'post' %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "{{ canonical_url }}#article",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "{{ canonical_url }}" },
+  "headline": {{ page.title | jsonify }},
+  "description": {{ seo_description | strip_html | normalize_whitespace | jsonify }},
+  "image": ["{{ social_image_url }}"],
+  "datePublished": "{{ page.date | date_to_xmlschema }}",
+  "dateModified": "{% assign article_modified = page.last_modified_at | default: page.date %}{{ article_modified | date_to_xmlschema }}",
+  "author": {
+    "@type": "Person",
+    "@id": "{{ site.url }}{{ site.baseurl }}/#person",
+    "name": {{ site.title | jsonify }},
+    "url": "{{ site.url }}{{ site.baseurl }}/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "@id": "{{ site.url }}{{ site.baseurl }}/#person",
+    "name": {{ site.title | jsonify }},
+    "url": "{{ site.url }}{{ site.baseurl }}/"
+  },
+  "inLanguage": "{{ page.lang | default: 'pt-BR' }}"
+  {% if page.tags and page.tags.size > 0 %},
+  "keywords": {{ page.tags | join: ', ' | jsonify }}
+  {% endif %}
+}
+</script>
+{% else %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "{% if page.url contains '/blog/' %}Blog{% else %}WebPage{% endif %}",
+  "@id": "{{ canonical_url }}#webpage",
+  "url": "{{ canonical_url }}",
+  "name": {{ document_title | append: ' | ' | append: site.title | jsonify }},
+  "description": {{ seo_description | strip_html | normalize_whitespace | jsonify }},
+  "inLanguage": "{{ page.lang | default: 'pt-BR' }}",
+  "isPartOf": {
+    "@type": "WebSite",
+    "@id": "{{ site.url }}{{ site.baseurl }}/#website",
+    "url": "{{ site.url }}{{ site.baseurl }}/",
+    "name": "{{ site.title | escape }}"
+  },
+  "about": { "@id": "{{ site.url }}{{ site.baseurl }}/#person" }
+}
+</script>
+{% endif %}

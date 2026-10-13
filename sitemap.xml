@@ -1,0 +1,26 @@
+---
+layout: null
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{% assign public_pages = site.pages | sort: 'url' %}
+{% for page in public_pages %}
+  {% if page.url == '/' or page.url == '/en/' or page.url contains '.html' or page.url contains '/blog/' or page.url contains '/resume/' or page.url contains '/contact/' %}
+  {% unless page.url contains '404' %}
+  <url>
+    <loc>{{ page.url | replace: 'index.html', '' | absolute_url | xml_escape }}</loc>
+    {% if page.last_modified_at %}
+    <lastmod>{{ page.last_modified_at | date_to_xmlschema }}</lastmod>
+    {% endif %}
+  </url>
+  {% endunless %}
+  {% endif %}
+{% endfor %}
+{% for post in site.posts %}
+  <url>
+    <loc>{{ post.url | absolute_url | xml_escape }}</loc>
+    {% assign post_modified = post.last_modified_at | default: post.date %}
+    <lastmod>{{ post_modified | date_to_xmlschema }}</lastmod>
+  </url>
+{% endfor %}
+</urlset>

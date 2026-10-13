@@ -1,0 +1,47 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "{{ site.url }}{{ site.baseurl }}/#person",
+      "name": {{ site.title | jsonify }},
+      "url": "{{ site.url }}{{ site.baseurl }}/",
+      "image": "{{ site.url }}{{ site.baseurl }}/assets/monogram.png",
+      "jobTitle": "{% if page.lang == 'en' %}Developer, Analyst and Communicator{% else %}Desenvolvedor, analista e comunicador{% endif %}",
+      "description": {{ seo_description | strip_html | normalize_whitespace | jsonify }},
+      "knowsAbout": [
+        "Philosophy",
+        "Philosophy of technology",
+        "Artificial intelligence",
+        "Communication",
+        "Authorship"
+      ],
+      "sameAs": [
+        "https://www.linkedin.com/in/thiagoorbitebarreto/",
+        "https://www.instagram.com/thiagoorbitebarreto/",
+        "https://x.com/thiago_orbite_"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "{{ site.url }}{{ site.baseurl }}/#website",
+      "url": "{{ site.url }}{{ site.baseurl }}/",
+      "name": {{ site.title | jsonify }},
+      "description": {{ seo_description | strip_html | normalize_whitespace | jsonify }},
+      "inLanguage": "{{ page.lang | default: 'pt-BR' }}",
+      "publisher": { "@id": "{{ site.url }}{{ site.baseurl }}/#person" }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "{{ canonical_url }}#webpage",
+      "url": "{{ canonical_url }}",
+      "name": {{ document_title | append: ' | ' | append: site.title | jsonify }},
+      "description": {{ seo_description | strip_html | normalize_whitespace | jsonify }},
+      "inLanguage": "{{ page.lang | default: 'pt-BR' }}",
+      "isPartOf": { "@id": "{{ site.url }}{{ site.baseurl }}/#website" },
+      "about": { "@id": "{{ site.url }}{{ site.baseurl }}/#person" }
+    }
+  ]
+}
+</script>

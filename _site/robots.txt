@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://thiago-orbite-barreto.github.io/site-pessoal/sitemap.xml

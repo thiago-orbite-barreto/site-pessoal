@@ -838,7 +838,7 @@ h3,
 
 .nav-title img {
   display: block;
-  width: 40px;
+  width: auto;
   height: 40px;
 }
 
@@ -1185,7 +1185,7 @@ h3,
   }
 
   .nav-title img {
-    width: 36px;
+    width: auto;
     height: 36px;
   }
 

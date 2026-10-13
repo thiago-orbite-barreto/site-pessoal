@@ -1,5 +1,8 @@
 title: "Thiago Orbite Barreto"
-description: "Site pessoal convertido para Jekyll"
+description: "Thiago Orbite Barreto escreve e cria sobre filosofia, tecnologia, inteligência artificial, comunicação e autoria."
+description_en: "Thiago Orbite Barreto writes about philosophy, technology, artificial intelligence, communication, and authorship."
+social_image: "/assets/images/social-card.png"
+social_image_alt: "Thiago Orbite Barreto — filosofia, tecnologia e comunicação"
 url: "https://thiago-orbite-barreto.github.io"
 baseurl: "/site-pessoal"
 markdown: kramdown
