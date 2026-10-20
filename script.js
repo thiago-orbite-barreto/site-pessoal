@@ -203,109 +203,281 @@ function updateFooterYearRange() {
 
 function initBlogPage() {
     const postsContainer = document.getElementById("blog-posts");
-    const indexContainer = document.getElementById("blog-index");
     const searchInput = document.getElementById("blog-search");
     const feedback = document.getElementById("blog-search-feedback");
 
-    if (!postsContainer || !indexContainer || !searchInput) {
+    if (!postsContainer || !searchInput || !document.querySelector(".blog-page")) {
         return;
     }
 
     const isEnglish = document.documentElement.lang === "en";
-
-    const posts = window.SITE_POSTS || [];
-
-    const normalizedPosts = posts
+    const posts = (window.SITE_POSTS || [])
         .slice()
         .sort((a, b) => new Date(b.date) - new Date(a.date))
         .map((post, index) => ({
             ...post,
-            id: `post-${slugify(post.title)}-${index}`
+            id: `post-${slugify(post.title)}-${index}`,
+            tags: Array.isArray(post.tags) ? post.tags : []
         }));
-
-    searchInput.addEventListener("input", () => {
-        const query = searchInput.value.trim().toLowerCase();
-        const terms = query.split(/\s+/).filter(Boolean);
-
-        const filtered = normalizedPosts.filter((post) => {
-            if (terms.length === 0) {
-                return true;
-            }
-
-            const searchableText = [post.title, post.summary, post.tags.join(" ")].join(" ").toLowerCase();
-            return terms.every((term) => searchableText.includes(term));
-        });
-
-        renderBlog(postsContainer, indexContainer, feedback, filtered, query, isEnglish);
-    });
-
-    renderBlog(postsContainer, indexContainer, feedback, normalizedPosts, "", isEnglish);
-}
-
-function renderBlog(postsContainer, indexContainer, feedback, posts, query, isEnglish) {
-    postsContainer.innerHTML = "";
-    indexContainer.innerHTML = "";
-
-    if (posts.length === 0) {
-        postsContainer.innerHTML = `<div class="glass-box no-results">${
-            isEnglish ? "No posts published yet." : "Nenhum post publicado ainda."
-        }</div>`;
-        indexContainer.innerHTML = `<p class="index-empty">${
-            isEnglish ? "No dates available yet." : "Sem datas cadastradas ainda."
-        }</p>`;
-        if (feedback) {
-            feedback.textContent = isEnglish ? "0 posts listed" : "0 posts listados";
-        }
-        return;
-    }
-
-    const groups = new Map();
+    const page = document.querySelector(".blog-page");
+    const carousel = document.getElementById("blog-carousel-track");
+    const carouselDots = document.getElementById("blog-carousel-dots");
+    const topicGrid = document.getElementById("blog-topic-grid");
+    const categoryGrid = document.getElementById("blog-category-grid");
+    const filterList = document.getElementById("blog-filter-list");
+    const loadMoreButton = document.getElementById("blog-load-more");
+    const labels = isEnglish
+        ? { all: "All topics", read: "Read article", author: "By", empty: "No posts published yet.", loadMore: "Load more posts" }
+        : { all: "Todos os temas", read: "Leia o artigo", author: "Por", empty: "Nenhum post publicado ainda.", loadMore: "Carregar mais posts" };
+    const allTags = [];
+    const tagKeys = new Set();
 
     posts.forEach((post) => {
-        const key = post.date.slice(0, 7);
-        if (!groups.has(key)) {
-            groups.set(key, []);
-        }
-        groups.get(key).push(post);
-
-        const article = document.createElement("article");
-        article.className = "glass-box post-card";
-        article.id = post.id;
-        article.innerHTML = `
-            <a class="post-card__image" href="${post.url}" aria-label="${isEnglish ? "Read: " : "Ler: "}${post.title}">
-                <img src="${post.cover}" alt="" loading="lazy" decoding="async">
-            </a>
-            <p class="post-date">${formatDate(post.date, isEnglish)}</p>
-            <h3><a href="${post.url}">${post.title}</a></h3>
-            <p>${post.summary}</p>
-            <p class="post-tags">${post.tags.map((tag) => `<span>${tag}</span>`).join("")}</p>
-        `;
-        postsContainer.appendChild(article);
+        post.tags.forEach((tag) => {
+            const key = tag.toLocaleLowerCase();
+            if (!tagKeys.has(key)) {
+                tagKeys.add(key);
+                allTags.push(tag);
+            }
+        });
     });
 
-    groups.forEach((groupPosts, monthKey) => {
-        const monthTitle = document.createElement("h3");
-        monthTitle.className = "index-month";
-        monthTitle.textContent = formatMonth(monthKey, isEnglish);
+    const uniqueTags = (tags) => {
+        const seen = new Set();
+        return tags.filter((tag) => {
+            const key = tag.toLocaleLowerCase();
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+        });
+    };
 
-        const list = document.createElement("ul");
-        list.className = "index-list";
+    const escapeHTML = (value) => String(value || "").replace(/[&<>"']/g, (character) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[character]);
 
-        groupPosts.forEach((post) => {
-            const item = document.createElement("li");
-            item.innerHTML = `<a href="#${post.id}">${post.title}</a>`;
-            list.appendChild(item);
+    const excerpt = (text, limit = 210) => {
+        const summary = String(text || "").trim();
+        if (summary.length <= limit) return summary;
+        const boundary = summary.lastIndexOf(" ", limit);
+        return `${summary.slice(0, boundary > 0 ? boundary : limit).trimEnd()}…`;
+    };
+
+    const createTagPill = (tag) =>
+        `<span class="blog-tag">${escapeHTML(tag)}</span>`;
+
+    const createTagButton = (tag, isActive = false) =>
+        `<button class="blog-filter${isActive ? " is-active" : ""}" type="button" data-category-filter="${escapeHTML(tag)}" aria-pressed="${isActive}">${escapeHTML(tag)}</button>`;
+
+    const setImage = (elementId, post) => {
+        const image = document.getElementById(elementId);
+        if (!image || !post) return;
+        image.src = post.cover;
+        image.alt = "";
+    };
+
+    const heroTitle = document.getElementById("blog-hero-title");
+    const heroSummary = document.getElementById("blog-hero-summary");
+    const heroLink = document.getElementById("blog-hero-link");
+    const heroVisual = document.getElementById("blog-hero-visual");
+    const featureTitle = document.getElementById("blog-feature-title");
+    const featureSummary = document.getElementById("blog-feature-summary");
+    const featureTag = document.getElementById("blog-feature-tag");
+    const featureLink = document.getElementById("blog-feature-link");
+
+    if (posts.length) {
+        const featuredPost = posts[0];
+        const themePost = posts.find((post) =>
+            post.tags.some((tag) => /inteligência artificial|artificial intelligence|ia\b/i.test(tag))
+        ) || featuredPost;
+        const themeTag = themePost.tags.find((tag) =>
+            /inteligência artificial|artificial intelligence|ia\b/i.test(tag)
+        );
+        const theme = themeTag || themePost.tags[0] || (isEnglish ? "Featured topic" : "Tema em destaque");
+
+        if (heroTitle) heroTitle.textContent = featuredPost.title;
+        if (heroSummary) heroSummary.textContent = excerpt(featuredPost.summary);
+        if (heroLink) {
+            heroLink.href = featuredPost.url;
+            heroLink.textContent = labels.read;
+        }
+        if (heroVisual) heroVisual.href = featuredPost.url;
+        setImage("blog-hero-image", featuredPost);
+
+        if (featureTitle) featureTitle.textContent = themePost.title;
+        if (featureSummary) featureSummary.textContent = excerpt(themePost.summary, 170);
+        if (featureTag) featureTag.textContent = theme;
+        if (featureLink) featureLink.href = themePost.url;
+        setImage("blog-feature-image", themePost);
+    } else {
+        if (heroTitle) heroTitle.textContent = labels.empty;
+        if (heroSummary) heroSummary.textContent = "";
+        if (heroLink) heroLink.hidden = true;
+        if (featureTitle) featureTitle.textContent = labels.empty;
+        if (featureSummary) featureSummary.textContent = "";
+        if (featureLink) featureLink.hidden = true;
+    }
+
+    if (carousel && carouselDots) {
+        carousel.innerHTML = posts.map((post, index) => `
+            <article class="blog-highlight-card" data-carousel-card="${index}">
+                <a class="blog-highlight-card__image" href="${escapeHTML(post.url)}" aria-label="${escapeHTML(`${labels.read}: ${post.title}`)}">
+                    <img src="${escapeHTML(post.cover)}" alt="" loading="lazy" decoding="async">
+                </a>
+                <div class="blog-highlight-card__copy">
+                    ${createTagPill(post.tags[0] || (isEnglish ? "Essay" : "Ensaio"))}
+                    <h3><a href="${escapeHTML(post.url)}">${escapeHTML(post.title)}</a></h3>
+                    <p>${escapeHTML(excerpt(post.summary, 170))}</p>
+                    <a class="blog-text-link" href="${escapeHTML(post.url)}">${labels.read} <span aria-hidden="true">&rarr;</span></a>
+                </div>
+            </article>
+        `).join("");
+        carouselDots.innerHTML = posts.map((post, index) =>
+            `<button class="blog-carousel-dot${index === 0 ? " is-active" : ""}" type="button" data-carousel-slide="${index}" aria-label="${isEnglish ? "Show article" : "Mostrar artigo"} ${index + 1}" aria-current="${index === 0 ? "true" : "false"}"></button>`
+        ).join("");
+
+        const cards = Array.from(carousel.querySelectorAll("[data-carousel-card]"));
+        const dots = Array.from(carouselDots.querySelectorAll("[data-carousel-slide]"));
+        const updateActiveDot = (activeIndex) => {
+            dots.forEach((dot, index) => {
+                const active = index === activeIndex;
+                dot.classList.toggle("is-active", active);
+                dot.setAttribute("aria-current", String(active));
+            });
+        };
+
+        carousel.querySelectorAll("[data-carousel-card]").forEach((card, index) => {
+            card.dataset.carouselIndex = String(index);
+        });
+        if (typeof IntersectionObserver !== "undefined") {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        updateActiveDot(Number(entry.target.dataset.carouselIndex));
+                    }
+                });
+            }, { root: carousel, threshold: 0.6 });
+            cards.forEach((card) => observer.observe(card));
+        }
+        dots.forEach((dot) => {
+            dot.addEventListener("click", () => {
+                const card = cards[Number(dot.dataset.carouselSlide)];
+                if (card) carousel.scrollTo({ left: card.offsetLeft, behavior: "smooth" });
+            });
         });
 
-        indexContainer.appendChild(monthTitle);
-        indexContainer.appendChild(list);
-    });
-
-    if (feedback) {
-        const label = posts.length === 1 ? (isEnglish ? "post" : "post") : (isEnglish ? "posts" : "posts");
-        const queryText = query ? ` - "${query}"` : "";
-        feedback.textContent = `${posts.length} ${label}${queryText}`;
+        page.querySelectorAll("[data-carousel-direction]").forEach((button) => {
+            button.disabled = posts.length < 2;
+            button.addEventListener("click", () => {
+                const direction = Number(button.dataset.carouselDirection);
+                carousel.scrollBy({ left: direction * carousel.clientWidth * 0.85, behavior: "smooth" });
+            });
+        });
     }
+
+    const topicTags = allTags.slice(0, 4);
+    if (topicGrid) {
+        topicGrid.innerHTML = topicTags.map((tag, index) => {
+            const matchingPost = posts.find((post) => post.tags.includes(tag));
+            return `
+                <article class="blog-topic-card">
+                    <a class="blog-topic-card__image" href="${escapeHTML(matchingPost ? matchingPost.url : "#blog-posts-section")}" aria-label="${escapeHTML(tag)}">
+                        <img src="${escapeHTML(matchingPost ? matchingPost.cover : "")}" alt="" loading="lazy" decoding="async">
+                    </a>
+                    <div class="blog-topic-card__copy">
+                        <p class="blog-eyebrow">${escapeHTML(isEnglish ? "Topic" : "Tema")} ${String(index + 1).padStart(2, "0")}</p>
+                        <h3>${escapeHTML(tag)}</h3>
+                        <button class="blog-button" type="button" data-category-filter="${escapeHTML(tag)}">${isEnglish ? "View posts" : "Ver posts"} <span aria-hidden="true">&rarr;</span></button>
+                    </div>
+                </article>
+            `;
+        }).join("");
+    }
+
+    const categoryTags = topicTags.length ? topicTags : allTags;
+    if (categoryGrid) {
+        categoryGrid.innerHTML = categoryTags.map((tag) =>
+            `<button class="blog-category-link" type="button" data-category-filter="${escapeHTML(tag)}">${escapeHTML(tag)} <span aria-hidden="true">&rarr;</span></button>`
+        ).join("");
+    }
+
+    if (filterList) {
+        filterList.innerHTML = [
+            createTagButton(labels.all, true),
+            ...allTags.map((tag) => createTagButton(tag))
+        ].join("");
+    }
+
+    let selectedTag = "";
+    let visibleCount = 6;
+
+    const renderPostList = () => {
+        const terms = searchInput.value.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
+        const matchingPosts = posts.filter((post) => {
+            const text = [post.title, post.summary, post.author, post.tags.join(" ")].join(" ").toLocaleLowerCase();
+            return (!selectedTag || post.tags.some((tag) => tag.toLocaleLowerCase() === selectedTag.toLocaleLowerCase())) &&
+                terms.every((term) => text.includes(term));
+        });
+        const visiblePosts = matchingPosts.slice(0, visibleCount);
+
+        postsContainer.innerHTML = visiblePosts.length
+            ? visiblePosts.map((post) => `
+                <article class="blog-list-item">
+                    <div class="blog-list-item__meta">
+                        ${createTagPill(post.tags[0] || (isEnglish ? "Essay" : "Ensaio"))}
+                        <span>${escapeHTML(formatDate(post.date, isEnglish))}</span>
+                        <span>${escapeHTML(`${labels.author} ${post.author || (isEnglish ? "Thiago Orbite Barreto" : "Thiago Orbite Barreto")}`)}</span>
+                    </div>
+                    <h3><a href="${escapeHTML(post.url)}">${escapeHTML(post.title)}</a></h3>
+                    <p>${escapeHTML(excerpt(post.summary, 240))}</p>
+                    <div class="blog-list-item__tags">${post.tags.map(createTagPill).join("")}</div>
+                </article>
+            `).join("")
+            : `<p class="blog-empty">${labels.empty}</p>`;
+
+        if (feedback) {
+            const resultLabel = isEnglish
+                ? (matchingPosts.length === 1 ? "post found" : "posts found")
+                : (matchingPosts.length === 1 ? "post encontrado" : "posts encontrados");
+            feedback.textContent = `${matchingPosts.length} ${resultLabel}`;
+        }
+        if (loadMoreButton) {
+            loadMoreButton.hidden = visiblePosts.length >= matchingPosts.length;
+        }
+    };
+
+    if (filterList || topicGrid || categoryGrid) {
+        page.addEventListener("click", (event) => {
+            const button = event.target.closest("[data-category-filter]");
+            if (!button) return;
+            selectedTag = button.dataset.categoryFilter === labels.all ? "" : button.dataset.categoryFilter;
+            visibleCount = 6;
+            page.querySelectorAll("[data-category-filter]").forEach((filterButton) => {
+                const active = filterButton.dataset.categoryFilter.toLocaleLowerCase() ===
+                    (selectedTag || labels.all).toLocaleLowerCase();
+                filterButton.classList.toggle("is-active", active);
+                if (filterButton.matches("button")) filterButton.setAttribute("aria-pressed", String(active));
+            });
+            renderPostList();
+            document.getElementById("blog-posts-section").scrollIntoView({ behavior: "smooth" });
+        });
+    }
+
+    searchInput.addEventListener("input", () => {
+        visibleCount = 6;
+        renderPostList();
+    });
+    if (loadMoreButton) {
+        loadMoreButton.addEventListener("click", () => {
+            visibleCount += 6;
+            renderPostList();
+        });
+    }
+    renderPostList();
 }
 
 function initScrollReveal() {
