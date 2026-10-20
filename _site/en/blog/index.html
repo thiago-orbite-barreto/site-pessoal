@@ -3,37 +3,37 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-
-
-
-
-
+  
+  
+    
+  
+  
     <meta name="translation" content="/site-pessoal/blog/">
-
-
-
-
-
-
-
-
+  
+  
+  
+  
+  
+  
+  
+  
   <title>Blog | Thiago Orbite Barreto</title>
   <meta name="description" content="Essays and reflections by Thiago Orbite Barreto on philosophy, technology, artificial intelligence, communication, and authorship.">
   <link rel="canonical" href="https://thiago-orbite-barreto.github.io/site-pessoal/en/blog/">
-
+  
     <meta property="og:locale" content="en_US">
-
-
-
-
-
+    
+    
+  
+  
+    
     <link rel="alternate" hreflang="en" href="https://thiago-orbite-barreto.github.io/site-pessoal/en/blog/">
-
+    
       <link rel="alternate" hreflang="pt-BR" href="https://thiago-orbite-barreto.github.io/site-pessoal/blog/">
-
+    
     <meta property="og:locale:alternate" content="pt_BR">
-
-
+    
+  
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Thiago Orbite Barreto">
   <meta property="og:title" content="Blog | Thiago Orbite Barreto">
@@ -45,12 +45,12 @@
   <meta name="twitter:title" content="Blog | Thiago Orbite Barreto">
   <meta name="twitter:description" content="Essays and reflections by Thiago Orbite Barreto on philosophy, technology, artificial intelligence, communication, and authorship.">
   <meta name="twitter:image" content="https://thiago-orbite-barreto.github.io/site-pessoal/assets/images/social-card.png">
-
+  
   <link rel="icon" id="site-favicon" href="/site-pessoal/assets/monogram.png" type="image/png">
   <link rel="stylesheet" href="/site-pessoal/assets/css/styles.css">
   <script>window.SITE_BASE = "/site-pessoal";</script>
-
-
+  
+    
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -71,16 +71,16 @@
 </script>
 
 
-
+  
 </head>
 <body data-translation-url="/site-pessoal/blog/">
   <header class="top-utility">
     <div class="utility-inner">
       <button id="theme-toggle" class="nav-btn" type="button" aria-label="Toggle theme"><img class="nav-icon nav-icon--theme" src="/site-pessoal/assets/icons/sun.svg" alt=""></button>
       <button id="lang-toggle" class="nav-btn" type="button" aria-label="Toggle language">
-
+        
           <img class="nav-icon nav-icon--lang" src="/site-pessoal/assets/icons/flag-us.svg" alt="US flag">
-
+        
       </button>
     </div>
   </header>
@@ -96,40 +96,99 @@
 
     <div class="nav-menu">
       <div class="nav-center">
-
+        
           <a href="/site-pessoal/en/blog/" class="nav-link">Blog</a>
-          <a href="/site-pessoal/en/resume/" class="nav-link">Resume</a>
+          <a href="/site-pessoal/en/resume/" class="nav-link">About</a>
           <a href="/site-pessoal/en/contact/" class="nav-link">Contact</a>
-
+        
       </div>
     </div>
   </nav>
 
   <main class="content-area">
-    <header class="main-header">
-    <h1 class="ff-title">BLOG</h1>
-    <p class="subtitle">Ideas, projects and work notes</p>
-</header>
-
-<main class="content-area">
-    <div class="blog-toolbar">
-        <div class="glass-box blog-search-box">
-            <label for="blog-search">Search by keywords</label>
-            <input id="blog-search" type="search" placeholder="Ex.: productivity, workflow, planning">
-            <p id="blog-search-feedback" class="blog-search-feedback"></p>
+    <main class="content-area blog-page">
+    <section class="blog-hero" aria-labelledby="blog-title">
+        <div class="blog-hero__copy">
+            <p class="blog-eyebrow">Ideas, projects and work notes</p>
+            <h1 id="blog-title" class="ff-title">BLOG</h1>
+            <h2 id="blog-hero-title">Reflections on technology, culture and authorship</h2>
+            <p id="blog-hero-summary">Essays and ideas on artificial intelligence, philosophy, communication and creativity.</p>
+            <div class="blog-hero__actions">
+                <a id="blog-hero-link" class="blog-button blog-button--primary" href="#blog-posts-section">Read the feature</a>
+                <a class="blog-button" href="#blog-posts-section">Browse all posts</a>
+            </div>
         </div>
-    </div>
+        <a id="blog-hero-visual" class="blog-hero__visual" href="#blog-posts-section" aria-label="Read the featured article">
+            <img id="blog-hero-image" src="/site-pessoal/assets/images/editorial-cover.svg" alt="" fetchpriority="high">
+            <span class="blog-hero__visual-label">Featured</span>
+        </a>
+    </section>
 
-    <div class="blog-layout">
-        <aside class="glass-box blog-sidebar">
-            <h2>Index by date</h2>
-            <div id="blog-index"></div>
-        </aside>
+    <section class="blog-section blog-highlights" aria-labelledby="blog-highlights-title">
+        <div class="blog-section__heading">
+            <div>
+                <p class="blog-eyebrow">On the reading list</p>
+                <h2 id="blog-highlights-title">Latest highlights</h2>
+            </div>
+            <div class="blog-carousel-controls">
+                <button class="blog-icon-button" type="button" data-carousel-direction="-1" aria-label="Previous article">&larr;</button>
+                <button class="blog-icon-button" type="button" data-carousel-direction="1" aria-label="Next article">&rarr;</button>
+            </div>
+        </div>
+        <div id="blog-carousel-track" class="blog-carousel-track" aria-label="Featured articles"></div>
+        <div id="blog-carousel-dots" class="blog-carousel-dots" aria-label="Choose a featured article"></div>
+    </section>
 
-        <section class="blog-main">
-            <div id="blog-posts"></div>
-        </section>
-    </div>
+    <section class="blog-section" aria-labelledby="blog-topics-title">
+        <div class="blog-section__heading">
+            <div>
+                <p class="blog-eyebrow">Explore by topic</p>
+                <h2 id="blog-topics-title">Ideas to keep the conversation going</h2>
+            </div>
+        </div>
+        <div id="blog-topic-grid" class="blog-topic-grid"></div>
+    </section>
+
+    <section class="blog-feature" aria-labelledby="blog-feature-title">
+        <div class="blog-feature__image">
+            <img id="blog-feature-image" src="/site-pessoal/assets/images/editorial-cover.svg" alt="" loading="lazy" decoding="async">
+        </div>
+        <div class="blog-feature__copy">
+            <p id="blog-feature-tag" class="blog-eyebrow">Featured topic</p>
+            <h2 id="blog-feature-title">Authorship in the age of artificial intelligence</h2>
+            <p id="blog-feature-summary">How technology transforms creation without erasing human intention and responsibility.</p>
+            <a id="blog-feature-link" class="blog-text-link" href="#blog-posts-section">Explore the topic <span aria-hidden="true">&rarr;</span></a>
+        </div>
+    </section>
+
+    <section id="blog-posts-section" class="blog-section blog-all-posts" aria-labelledby="blog-posts-title">
+        <div class="blog-section__heading blog-all-posts__heading">
+            <div>
+                <p class="blog-eyebrow">The editorial archive</p>
+                <h2 id="blog-posts-title">All posts</h2>
+            </div>
+            <div class="blog-search-box">
+                <label for="blog-search">Search by keywords</label>
+                <input id="blog-search" type="search" placeholder="Ex.: artificial intelligence, authorship">
+                <p id="blog-search-feedback" class="blog-search-feedback" aria-live="polite"></p>
+            </div>
+        </div>
+        <div id="blog-filter-list" class="blog-filter-list" aria-label="Filter articles by topic"></div>
+        <div id="blog-posts" class="blog-post-list"></div>
+        <div class="blog-load-more-wrap">
+            <button id="blog-load-more" class="blog-button" type="button">Load more posts</button>
+        </div>
+    </section>
+
+    <section class="blog-section blog-category-navigation" aria-labelledby="blog-categories-title">
+        <div class="blog-section__heading">
+            <div>
+                <p class="blog-eyebrow">Find your next topic</p>
+                <h2 id="blog-categories-title">Browse posts by topic</h2>
+            </div>
+        </div>
+        <div id="blog-category-grid" class="blog-category-grid"></div>
+    </section>
 </main>
 
 <script>
@@ -141,15 +200,13 @@ window.SITE_POSTS = [
         url: "/site-pessoal/en/2026/05/30/the-author-as-curator-ai-and-the-new-frontier-of-authorship/",
         cover: "/site-pessoal/assets/images/editorial-cover.svg",
         date: "2026-05-30",
+        author: "Thiago Orbite Barreto",
         summary: "The rapid integration of Large Language Models (LLMs) into contemporary writing has sparked a normative impasse: must one obligatorily declare the machine’s participation? Although academic and editorial institutions seek rigid regulations, the nature of intellectual labor suggests that mandatory disclosure is dispensable when AI serves as a support for human intentionality, as the ultimate value of the work lies in the curation and refinement provided by the author.",
         tags: ["artificial intelligence", "philosophy of technology", "authorship", "communication"]
     }
 
 ];
 </script>
-
-
-
 
   </main>
 

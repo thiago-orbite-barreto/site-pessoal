@@ -56,11 +56,11 @@ Notas
 - Mantive `index.html`, `blog.html`, `curriculo.html` e `contato.html` como páginas com front matter para que usem `_layouts/default.html`.
 - Convertemos também as versões em inglês para usar o layout: `index_en.html`, `blog_en.html`, `curriculo_en.html`, `contact_en.html`.
 
-Rotas em inglês (URLs locais/produÃ§Ã£o):
+Rotas em inglês (URLs locais/produção):
 
 - Home (EN): `/en/`
 - Blog (EN): `/en/blog/`
-- Resume (EN): `/en/resume/`
+- About (EN): `/en/resume/`
 - Contact (EN): `/en/contact/`
 
 Exemplo de URL pública (substitua pelo seu domínio GitHub Pages):
