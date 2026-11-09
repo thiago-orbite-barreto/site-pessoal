@@ -1948,25 +1948,34 @@ h3,
   align-items: center;
   gap: 8px;
   margin-bottom: clamp(24px, 4vw, 40px);
-  color: color-mix(in srgb, var(--text) 62%, transparent);
-  font-size: 0.78rem;
+  color: color-mix(in srgb, var(--text) 58%, transparent);
+  font-size: 0.85rem;
   line-height: 1.5;
 }
 
-.post-breadcrumb a {
-  color: inherit;
-  text-decoration: none;
+.post-breadcrumb > span[aria-hidden="true"] {
+  color: color-mix(in srgb, var(--text) 36%, transparent);
 }
 
-.post-breadcrumb a:hover {
+.post-article .post-breadcrumb a,
+.post-article .post-breadcrumb a:visited {
+  color: color-mix(in srgb, var(--text) 68%, transparent);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.post-article .post-breadcrumb a:hover,
+.post-article .post-breadcrumb a:focus-visible {
   color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .post-header h1 {
   margin: 0;
   font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
   font-size: clamp(2.25rem, 4.5vw, 3rem);
-  font-weight: 400;
+  font-weight: 700;
   letter-spacing: -0.035em;
   line-height: 1.15;
 }
@@ -1985,6 +1994,7 @@ h3,
   align-items: center;
   gap: 8px 18px;
   margin-top: 24px;
+  margin-bottom: 4px;
   color: color-mix(in srgb, var(--text) 68%, transparent);
   font-size: 0.82rem;
 }
@@ -1998,20 +2008,49 @@ h3,
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px 16px;
+  gap: 10px;
   margin-top: 22px;
   color: color-mix(in srgb, var(--text) 66%, transparent);
   font-size: 0.78rem;
 }
 
-.post-share a {
-  color: var(--text);
-  text-decoration-color: color-mix(in srgb, var(--accent) 70%, transparent);
-  text-underline-offset: 3px;
+.post-share > span {
+  margin-right: 2px;
 }
 
-.post-share a:hover {
+.post-article .post-share .post-share__link,
+.post-article .post-share .post-share__link:visited {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--panel-bg) 55%, transparent);
+  color: var(--text);
+  font: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.post-share__link svg {
+  width: 15px;
+  height: 15px;
+  fill: currentColor;
+}
+
+.post-article .post-share .post-share__link:hover,
+.post-article .post-share .post-share__link:focus-visible {
   color: var(--accent);
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, var(--panel-bg));
+}
+
+.post-breadcrumb a:focus-visible,
+.post-share__link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 .post-cover {
@@ -2029,7 +2068,7 @@ h3,
 
 .post-content {
   color: var(--text);
-  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  font-size: clamp(1.125rem, 1.4vw, 1.25rem);
   line-height: 1.75;
 }
 
