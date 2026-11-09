@@ -136,7 +136,7 @@
     </div>
   </nav>
 
-  <main class="content-area{% if page.url == '/' or page.url == '/en/' %} home-page{% endif %}">
+  <main class="content-area{% if page.url == '/' or page.url == '/en/' %} home-page{% endif %}{% if page.layout == 'post' %} post-page-shell{% endif %}">
     {{ content }}
   </main>
 

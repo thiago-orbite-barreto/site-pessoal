@@ -2,81 +2,109 @@
 layout: default
 ---
 
-<div class="blog-layout">
-  <aside class="glass-box blog-sidebar">
-    <div class="blog-search-box">
-      <label for="blog-search">{% if page.lang == 'en' %}Search posts{% else %}Pesquisar por posts{% endif %}</label>
-      <input id="blog-search" type="search" placeholder="{% if page.lang == 'en' %}Search...{% else %}Ex.: produtividade, planejamento{% endif %}">
-      <p id="blog-search-feedback" class="blog-search-feedback"></p>
+{% assign post_absolute_url = page.url | absolute_url %}
+<article class="post-article">
+  <nav class="post-breadcrumb" aria-label="{% if page.lang == 'en' %}Breadcrumb{% else %}Navegação estrutural{% endif %}">
+    {% if page.lang == 'en' %}
+      <a href="{{ '/' | relative_url }}">Home</a>
+      <span aria-hidden="true">/</span>
+      <a href="{{ '/en/blog/' | relative_url }}">Blog</a>
+    {% else %}
+      <a href="{{ '/' | relative_url }}">Início</a>
+      <span aria-hidden="true">/</span>
+      <a href="{{ '/blog/' | relative_url }}">Blog</a>
+    {% endif %}
+    <span aria-hidden="true">/</span>
+    <span aria-current="page">{{ page.title | escape }}</span>
+  </nav>
+
+  <header class="post-header">
+    {% unless content contains '<h1' %}
+      <h1 id="post-title">{{ page.title }}</h1>
+    {% endunless %}
+    {% if page.description %}
+      <p class="post-summary">{{ page.description | escape }}</p>
+    {% endif %}
+    <div class="post-byline">
+      {% assign reading_minutes = page.content | number_of_words | divided_by: 200 %}
+      {% if reading_minutes < 1 %}
+        {% assign reading_minutes = 1 %}
+      {% endif %}
+      {% if page.author %}
+        <span class="post-author">{{ page.author | escape }}</span>
+      {% endif %}
+      <time class="post-meta" data-date="{{ page.date | date: "%Y-%m-%d" }}" datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%d %B %Y" }}</time>
+      <span class="post-reading-time">
+        {% if page.lang == 'en' %}
+          {{ reading_minutes }} min read
+        {% else %}
+          {{ reading_minutes }} min de leitura
+        {% endif %}
+      </span>
     </div>
-    <div id="blog-index"></div>
-  </aside>
+    <nav class="post-share" aria-label="{% if page.lang == 'en' %}Share this article{% else %}Compartilhar este artigo{% endif %}">
+      <span>{% if page.lang == 'en' %}Share{% else %}Compartilhar{% endif %}</span>
+      <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ post_absolute_url | url_encode }}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href="https://twitter.com/intent/tweet?url={{ post_absolute_url | url_encode }}&amp;text={{ page.title | url_encode }}" target="_blank" rel="noopener noreferrer">X</a>
+    </nav>
+  </header>
 
-  <section class="blog-main">
-    <main class="content-area">
-      <article class="glass-box post">
-        <header>
-          {% unless content contains '<h1' %}
-            <h1>{{ page.title }}</h1>
-          {% endunless %}
-          <p class="post-meta" data-date="{{ page.date | date: "%Y-%m-%d" }}">{{ page.date | date: "%d %B %Y" }}</p>
-          {% if page.author %}
-            <p class="post-author">{{ page.author }}</p>
-          {% endif %}
-        </header>
-        <section class="post-content">
-          {{ content }}
-        </section>
+  {% if page.cover %}
+    <figure class="post-cover">
+      <img src="{{ page.cover | relative_url }}" alt="{{ page.cover_alt | default: page.title | escape }}" fetchpriority="high">
+    </figure>
+  {% endif %}
 
-        <footer class="post-footer">
-          <h3>{% if page.lang == 'en' %}Other posts{% else %}Outros posts{% endif %}</h3>
-          <ul class="related-posts">
-            {% if page.lang == 'en' %}
-              {% assign page_is_en = true %}
+  <section class="post-content" aria-label="{% if page.lang == 'en' %}Article text{% else %}Texto do artigo{% endif %}">
+    {{ content }}
+  </section>
+
+  <footer class="post-footer">
+    <h2>{% if page.lang == 'en' %}Other posts{% else %}Outros posts{% endif %}</h2>
+    <ul class="related-posts">
+      {% if page.lang == 'en' %}
+        {% assign page_is_en = true %}
+      {% else %}
+        {% if page.url contains '/en/' %}
+          {% assign page_is_en = true %}
+        {% else %}
+          {% assign page_is_en = false %}
+        {% endif %}
+      {% endif %}
+      {% assign related_count = 0 %}
+      {% for post in site.posts %}
+        {% assign post_rel = post.url | relative_url %}
+        {% assign page_rel = page.url | relative_url %}
+        {% if post_rel != page_rel %}
+          {% unless post.ref and page.ref and post.ref == page.ref %}
+            {% if post.lang == 'en' %}
+              {% assign post_is_en = true %}
             {% else %}
-              {% if page.url contains '/en/' %}
-                {% assign page_is_en = true %}
+              {% if post.url contains '/en/' %}
+                {% assign post_is_en = true %}
               {% else %}
-                {% assign page_is_en = false %}
+                {% assign post_is_en = false %}
               {% endif %}
             {% endif %}
-            {% assign related_count = 0 %}
-            {% for post in site.posts %}
-              {% assign post_rel = post.url | relative_url %}
-              {% assign page_rel = page.url | relative_url %}
-              {% if post_rel != page_rel %}
-                {% unless post.ref and page.ref and post.ref == page.ref %}
-                  {% if post.lang == 'en' %}
-                    {% assign post_is_en = true %}
-                  {% else %}
-                    {% if post.url contains '/en/' %}
-                      {% assign post_is_en = true %}
-                    {% else %}
-                      {% assign post_is_en = false %}
-                    {% endif %}
-                  {% endif %}
 
-                {% if page_is_en %}
-                  {% if post_is_en %}
-                    {% if related_count < 5 %}
-                      <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
-                      {% assign related_count = related_count | plus: 1 %}
-                    {% endif %}
-                  {% endif %}
-                {% else %}
-                  {% unless post_is_en %}
-                    {% if related_count < 5 %}
-                      <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
-                      {% assign related_count = related_count | plus: 1 %}
-                    {% endif %}
-                  {% endunless %}
+            {% if page_is_en %}
+              {% if post_is_en %}
+                {% if related_count < 5 %}
+                  <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
+                  {% assign related_count = related_count | plus: 1 %}
                 {% endif %}
-                {% endunless %}
               {% endif %}
-            {% endfor %}
-          </ul>
-        </footer>
-      </article>
-    </main>
-  </section>
-</div>
+            {% else %}
+              {% unless post_is_en %}
+                {% if related_count < 5 %}
+                  <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
+                  {% assign related_count = related_count | plus: 1 %}
+                {% endif %}
+              {% endunless %}
+            {% endif %}
+          {% endunless %}
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </footer>
+</article>
