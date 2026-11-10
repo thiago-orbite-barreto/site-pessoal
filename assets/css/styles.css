@@ -244,6 +244,50 @@ body {
   border: 1px solid var(--border);
   padding: 24px;
 }
+
+.about-card {
+  display: grid;
+  gap: 24px;
+  padding: clamp(24px, 4vw, 42px);
+  border-radius: 20px;
+  background: var(--panel-bg);
+}
+
+.about-card__lead,
+.about-card__body p {
+  margin: 0;
+  color: color-mix(in srgb, var(--text) 82%, transparent);
+}
+
+.about-card__body {
+  display: grid;
+  gap: 14px;
+}
+
+.about-card__topics {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about-card__topics li {
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--bg) 58%, var(--panel-bg));
+}
+
+.about-card__topics strong {
+  color: var(--accent);
+}
+
+.about-card__note {
+  margin: 0;
+  color: color-mix(in srgb, var(--text) 68%, transparent);
+  font-size: 0.92rem;
+}
+
 .cv-item {
   margin-bottom: 20px;
 }
@@ -403,6 +447,7 @@ body {
 .contact-panel {
   display: grid;
   gap: 24px;
+  border-radius: 14px;
 }
 
 .contact-panel__intro h2 {
@@ -448,7 +493,7 @@ body {
   width: 100%;
   padding: 12px 14px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 10px;
   background: var(--panel-bg);
   color: var(--text);
   font-family: "Inter", sans-serif;
@@ -769,8 +814,23 @@ body {
     padding: 18px;
   }
 
+  .about-card {
+    gap: 20px;
+    padding: 22px 18px;
+    border-radius: 18px;
+  }
+
+  .about-card__topics li {
+    padding: 12px 14px;
+  }
+
   .form-row {
     grid-template-columns: 1fr;
+  }
+
+  .contact-panel {
+    padding: 18px;
+    border-radius: 12px;
   }
 }
 
@@ -793,6 +853,15 @@ body {
   }
 
   .glass-box {
+    padding: 16px;
+  }
+
+  .about-card {
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
+
+  .contact-panel {
     padding: 16px;
   }
 }
